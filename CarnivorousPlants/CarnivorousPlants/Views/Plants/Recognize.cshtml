@@ -1,0 +1,17 @@
+﻿@using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction.Models
+@model ImagePrediction
+
+@{
+    ViewData["Title"] = "Recognize";
+}
+
+<h1>Recognize</h1>
+
+
+@Html.DisplayFor(model => model.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault().TagName) : @Html.DisplayFor(model => model.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault().Probability)
+
+@*@foreach (var c in Model.Predictions)
+    {
+        @c.TagName
+        @c.Probability
+    }*@
