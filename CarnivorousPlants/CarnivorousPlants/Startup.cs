@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using CarnivorousPlants.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CarnivorousPlants.Services;
 
 namespace CarnivorousPlants
 {
@@ -43,6 +44,8 @@ namespace CarnivorousPlants
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSingleton<IPhotoStorageService, PhotoStorageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
