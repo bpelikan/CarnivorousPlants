@@ -14,6 +14,7 @@ using CarnivorousPlants.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CarnivorousPlants.Services;
+using CarnivorousPlants.Models;
 
 namespace CarnivorousPlants
 {
@@ -39,7 +40,7 @@ namespace CarnivorousPlants
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
