@@ -1,5 +1,5 @@
-﻿@using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction.Models
-@model ImagePrediction
+﻿@using CarnivorousPlants.Models.PlantsViewModels
+@model RecognizeViewModel
 
 @{
     ViewData["Title"] = "Recognize";
@@ -7,11 +7,35 @@
 
 <h1>Recognize</h1>
 
+<img src="@Model.PhotoURL" alt="Photo" height="50%" width="50%">
 
-@Html.DisplayFor(model => model.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault().TagName) : @Html.DisplayFor(model => model.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault().Probability)
+@Html.DisplayFor(model => model.ImagePrediction.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault().TagName) : @Html.DisplayFor(model => model.ImagePrediction.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault().Probability)
 
-@*@foreach (var c in Model.Predictions)
+<br />
+<br />
+<table class="table table-condensed table-bordered" header header-content="Predictions">
+    <tr>
+        <th>Tag Name</th>
+        <th>Probability</th>
+    </tr>
+
+    @foreach (var c in Model.ImagePrediction.Predictions)
     {
-        @c.TagName
-        @c.Probability
-    }*@
+        if (c == @Model.ImagePrediction.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault())
+        {
+            @:<tr style = "background-color: lightgreen;">
+        }
+        else
+        {
+            @:<tr>
+        }
+        
+            <td>
+                @Html.DisplayFor(model => c.TagName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => c.Probability)
+            </td>
+        @:</tr>
+    }
+</table>

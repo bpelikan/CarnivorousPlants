@@ -5,7 +5,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using CarnivorousPlants.Models.PlantsViewModels;
 using CarnivorousPlants.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Prediction;
@@ -16,7 +18,8 @@ using Newtonsoft.Json;
 
 namespace CarnivorousPlants.Controllers
 {
-    //[Route("[controller]/[action]")]
+    [Authorize]
+    [Route("[controller]/[action]")]
     public class PlantsController : Controller
     {
         private readonly IPhotoStorageService _photoStorageService;
@@ -79,12 +82,14 @@ namespace CarnivorousPlants.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
+        [Route("{photoId}")]
         public async Task<IActionResult> Recognize(string photoId)
         {
             var photoUrl = _photoStorageService.UriFor(photoId);
             ImageUrl imgUrl = new ImageUrl { Url = photoUrl };
 
-            ImagePrediction imagePrediction = null;
+            RecognizeViewModel recognizeViewModel = new RecognizeViewModel();
+            //ImagePrediction imagePrediction = null;
 
             try
             {
@@ -109,7 +114,8 @@ namespace CarnivorousPlants.Controllers
                 StreamReader reader = new StreamReader(dataStream);
                 string responseFromServer = reader.ReadToEnd();
 
-                imagePrediction = JsonConvert.DeserializeObject<ImagePrediction>(responseFromServer);
+                recognizeViewModel.ImagePrediction = JsonConvert.DeserializeObject<ImagePrediction>(responseFromServer);
+                recognizeViewModel.PhotoURL = photoUrl;
 
                 //appointmentExist = bool.Parse(responseFromServer);
 
@@ -126,7 +132,7 @@ namespace CarnivorousPlants.Controllers
             //ImagePrediction 
             //var test = result.Predictions;
 
-            return View(imagePrediction);
+            return View(recognizeViewModel);
         }
 
 
