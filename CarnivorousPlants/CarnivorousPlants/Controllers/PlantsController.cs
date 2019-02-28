@@ -86,10 +86,7 @@ namespace CarnivorousPlants.Controllers
         public async Task<IActionResult> Recognize(string photoId)
         {
             var photoUrl = _photoStorageService.UriFor(photoId);
-            ImageUrl imgUrl = new ImageUrl { Url = photoUrl };
-
             RecognizeViewModel recognizeViewModel = new RecognizeViewModel();
-            //ImagePrediction imagePrediction = null;
 
             try
             {
@@ -105,11 +102,8 @@ namespace CarnivorousPlants.Controllers
                 dataStream.Write(byteArray, 0, byteArray.Length);
                 dataStream.Close();
 
-
                 WebResponse response = request.GetResponse();
-
-                var statusCode = ((HttpWebResponse)response).StatusDescription;
-
+                //var statusCode = ((HttpWebResponse)response).StatusDescription;
                 dataStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(dataStream);
                 string responseFromServer = reader.ReadToEnd();
@@ -117,26 +111,24 @@ namespace CarnivorousPlants.Controllers
                 recognizeViewModel.ImagePrediction = JsonConvert.DeserializeObject<ImagePrediction>(responseFromServer);
                 recognizeViewModel.PhotoURL = photoUrl;
 
-                //appointmentExist = bool.Parse(responseFromServer);
-
-                //reader.Close();
-                //response.Close();
+                reader.Close();
+                response.Close();
             }
             catch (WebException ex)
             {
                 TempData["Error"] = ex.Message;
             }
-
-            //var result =  endpoint.PredictImageUrl(projectID, imgUrl);
-            //var result = await endpoint.PredictImageUrlAsync(projectID, imgUrl);
-            //ImagePrediction 
-            //var test = result.Predictions;
+            
 
             return View(recognizeViewModel);
         }
 
+        //ImageUrl imgUrl = new ImageUrl { Url = photoUrl };
 
-
+        //var result = endpoint.PredictImageUrl(projectID, imgUrl);
+        //var result = await endpoint.PredictImageUrlAsync(projectID, imgUrl);
+        //ImagePrediction
+        //var test = result.Predictions;
 
         //try
         //{
