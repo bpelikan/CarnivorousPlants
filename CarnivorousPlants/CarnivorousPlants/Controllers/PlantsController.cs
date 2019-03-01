@@ -24,11 +24,11 @@ namespace CarnivorousPlants.Controllers
     {
         private readonly IPhotoStorageService _photoStorageService;
         private readonly IConfiguration _configuration;
-        private string trainingKey;
-        private string predictionKey;
-        private string predictionEndpoint2;
-        private Guid projectID;
-        CustomVisionPredictionClient endpoint;
+        private readonly string trainingKey;
+        private readonly string predictionKey;
+        private readonly Guid projectID;
+        private readonly CustomVisionPredictionClient endpoint;
+        //private string predictionEndpoint2;
 
         public PlantsController(IPhotoStorageService photoStorageService, IConfiguration configuration)
         {
@@ -38,13 +38,12 @@ namespace CarnivorousPlants.Controllers
             trainingKey = configuration["trainingKey"];
             predictionKey = configuration["predictionKey"];
             projectID = Guid.Parse(configuration["projectID"]);
-            predictionEndpoint2 = configuration["predictionAPIEndpoint"];
 
             endpoint = new CustomVisionPredictionClient()
-                        {
-                            ApiKey = predictionKey,
-                            Endpoint = configuration["predictionEndpoint"]
-                        };
+            {
+                ApiKey = predictionKey,
+                Endpoint = configuration["WestEuropeEndpoint"]
+            };
         }
 
         //public IActionResult Index()
@@ -70,9 +69,6 @@ namespace CarnivorousPlants.Controllers
                     var photoId = await _photoStorageService.SavePhotoAsync(stream, photo.FileName);
                     return RedirectToAction(nameof(PlantsController.Recognize), new { photoId });
                 }
-
-                //TempData["Success"] = _stringLocalizer["Successfully sended."].ToString();
-                //return RedirectToAction(nameof(MyApplicationController.MyApplicationDetails), new { applicationId = application.Id });
             }
             catch (Exception ex)
             {
@@ -86,42 +82,48 @@ namespace CarnivorousPlants.Controllers
         public async Task<IActionResult> Recognize(string photoId)
         {
             var photoUrl = _photoStorageService.UriFor(photoId);
-            RecognizeViewModel recognizeViewModel = new RecognizeViewModel();
+            ImageUrl imgUrl = new ImageUrl { Url = photoUrl };
 
-            try
+            RecognizeViewModel recognizeViewModel = new RecognizeViewModel()
             {
-                WebRequest request = WebRequest.Create(predictionEndpoint2);
-                request.Headers["Prediction-Key"] = predictionKey;
-                request.Headers["Content-Type"] = "application/json";
-                //request.Credentials = CredentialCache.DefaultCredentials;
-                request.Method = "POST";
-                string postData = $"{{\"Url\": \"{photoUrl}\"}}";
-                byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-                request.ContentLength = byteArray.Length;
-                Stream dataStream = request.GetRequestStream();
-                dataStream.Write(byteArray, 0, byteArray.Length);
-                dataStream.Close();
-
-                WebResponse response = request.GetResponse();
-                //var statusCode = ((HttpWebResponse)response).StatusDescription;
-                dataStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(dataStream);
-                string responseFromServer = reader.ReadToEnd();
-
-                recognizeViewModel.ImagePrediction = JsonConvert.DeserializeObject<ImagePrediction>(responseFromServer);
-                recognizeViewModel.PhotoURL = photoUrl;
-
-                reader.Close();
-                response.Close();
-            }
-            catch (WebException ex)
-            {
-                TempData["Error"] = ex.Message;
-            }
-            
+                PhotoURL = photoUrl,
+                ImagePrediction = await endpoint.PredictImageUrlAsync(projectID, imgUrl)
+            };
 
             return View(recognizeViewModel);
         }
+
+        //try
+        //{
+        //    WebRequest request = WebRequest.Create(predictionEndpoint2);
+        //    request.Headers["Prediction-Key"] = predictionKey;
+        //    request.Headers["Content-Type"] = "application/json";
+        //    //request.Credentials = CredentialCache.DefaultCredentials;
+        //    request.Method = "POST";
+        //    string postData = $"{{\"Url\": \"{photoUrl}\"}}";
+        //    byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+        //    request.ContentLength = byteArray.Length;
+        //    Stream dataStream = request.GetRequestStream();
+        //    dataStream.Write(byteArray, 0, byteArray.Length);
+        //    dataStream.Close();
+
+        //    WebResponse response = request.GetResponse();
+        //    //var statusCode = ((HttpWebResponse)response).StatusDescription;
+        //    dataStream = response.GetResponseStream();
+        //    StreamReader reader = new StreamReader(dataStream);
+        //    string responseFromServer = reader.ReadToEnd();
+
+        //    recognizeViewModel.ImagePrediction = JsonConvert.DeserializeObject<ImagePrediction>(responseFromServer);
+        //    recognizeViewModel.PhotoURL = photoUrl;
+
+        //    reader.Close();
+        //    response.Close();
+        //}
+        //catch (WebException ex)
+        //{
+        //    TempData["Error"] = ex.Message;
+        //}
+
 
         //ImageUrl imgUrl = new ImageUrl { Url = photoUrl };
 
