@@ -1,3 +1,39 @@
 ﻿@{
     Layout = "_Layout";
 }
+
+@if (@TempData["Error"] != null)
+{
+    <div class="alert alert-danger" id="danger-alert">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        @*@TempData["Error"]
+            <br />*@
+        @Html.Raw(TempData["Error"])
+    </div>
+}
+
+@if (@TempData["Warning"] != null)
+{
+    <div class="alert alert-warning" id="warning-alert">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        @*@TempData["Warning"]*@
+        @Html.Raw(TempData["Warning"])
+    </div>
+}
+@if (@TempData["WarningEmailNotification"] != null)
+{
+    <div class="alert alert-warning" id="warning-alert">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        @*@TempData["Warning"]*@
+        @Html.Raw(TempData["WarningEmailNotification"])
+    </div>
+}
+
+@if (@TempData["Success"] != null)
+{
+    <div class="alert alert-success" id="success-alert">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        @*@TempData["Success"]*@
+        @Html.Raw(TempData["Success"])
+    </div>
+}
