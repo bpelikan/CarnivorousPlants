@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CarnivorousPlants.Models.ProjectViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
@@ -10,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace CarnivorousPlants.Controllers
 {
+    [Authorize]
+    [Route("[controller]/[action]")]
     public class ProjectController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -45,7 +48,7 @@ namespace CarnivorousPlants.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateViewModel createViewModel)
+        public IActionResult Create(CreateViewModel createViewModel)
         {
             var project = trainingApi.CreateProject(createViewModel.Name);
 
@@ -53,6 +56,15 @@ namespace CarnivorousPlants.Controllers
             var test = project.Settings;
             var test2 = project.Settings.DomainId;
             TempData["Success"] = $"The project <b>{createViewModel.Name}</b> has been successfully created.";
+            return RedirectToAction(nameof(ProjectController.Index));
+        }
+
+        [Route("{projectId?}")]
+        public IActionResult Delete(Guid projectId)
+        {
+            var projectName = trainingApi.GetProject(projectId).Name;
+            trainingApi.DeleteProject(projectId);
+            TempData["Success"] = $"The project <b>{projectName}</b> has been successfully deleted.";
             return RedirectToAction(nameof(ProjectController.Index));
         }
 
