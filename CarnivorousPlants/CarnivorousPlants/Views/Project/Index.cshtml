@@ -41,7 +41,7 @@
                 <td>@project.LastModified</td>
                 <td><img src="@project.ThumbnailUri"/></td>
                 <td>
-                    <a class="btn btn-outline-dark" asp-action="Delete" asp-route-projectId="@project.Id">
+                    <a class="btn btn-outline-dark" asp-action="Delete" asp-route-projectId="@project.Id" onclick="return confirm('Do you really want to delete this project?');">
                         <span class="oi oi-trash">
                         </span>
                     </a>
