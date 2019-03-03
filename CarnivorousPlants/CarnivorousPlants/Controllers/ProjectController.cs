@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CarnivorousPlants.Models.ProjectViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
+using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace CarnivorousPlants.Controllers
@@ -31,12 +32,15 @@ namespace CarnivorousPlants.Controllers
         public IActionResult Index()
         {
             //TempData["Success"] = "Test";
-            return View();
+            IList<Project> vm = trainingApi.GetProjects();
+            return View(vm);
         }
 
         public IActionResult Create()
         {
-            CreateViewModel vm = new CreateViewModel();
+            CreateViewModel vm = new CreateViewModel() {
+                Domains = trainingApi.GetDomains()
+            };
             return View(vm);
         }
 

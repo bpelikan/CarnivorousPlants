@@ -1,8 +1,9 @@
-﻿@model string
+﻿@using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models
+@model IList<Project>
 
 @{
     ViewData["Title"] = "Projects";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+ Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @*<h1>Index of project</h1>*@
@@ -15,4 +16,33 @@
     </a>
 </h2>
 
+<table class="table table-condensed table-bordered" header header-content="Job position management">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Created</th>
+            <th>LastModified</th>
+            <th>ThumbnailUri</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var project in Model)
+        {
+            <tr>
+                @*<td>@jobPosition.Id</td>*@
+                <td>@project.Id</td>
+                <td>@project.Name</td>
+                <td>@project.Description</td>
+                <td>@project.Created</td>
+                <td>@project.LastModified</td>
+                <td><img src="@project.ThumbnailUri"/></td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>
 
