@@ -7,6 +7,17 @@
 
 <h1>Create project</h1>
 <hr />
+<b>Model: @Model.Name</b>
+@*<div>
+        <ul>
+            @foreach (var domain in Model.Domains)
+            {
+                <li >
+                        @domain.Name - @domain.Type (@domain.Id)
+                </li>
+            }
+        </ul>
+    </div>*@
 
 <form asp-controller="Project" asp-action="Create" method="post" class="form-horizontal" role="form">
     <div asp-validation-summary="All" class="text-danger"></div>
@@ -20,21 +31,91 @@
     </div>
 
     <div class="form-group">
+        <label asp-for="Description" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+
+    <table class="table table-condensed table-bordered" header header-content="Job position management">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Enabled</th>
+                <th>Exportable</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var domain in Model.Domains)
+            {
+                <tr>
+                    @*<td>@jobPosition.Id</td>*@
+                    <td>@Html.RadioButtonFor(m => m.DomainId, @domain.Id)</td>
+                    <td>@domain.Id</td>
+                    <td>@domain.Name</td>
+                    <td>@domain.Type</td>
+                    <td>@domain.Enabled</td>
+                    <td>@domain.Exportable</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+
+
+
+    <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-success btn-block" value="Create"/>
+            <input type="submit" class="btn btn-success btn-block" value="Create" />
         </div>
         @*<div class="col-md-5">
-            <input type="submit" class="btn btn-danger btn-block" value="Reject" asp-route-accepted="@false" asp-route-returnUrl="@ViewData["ReturnUrl"]" />
-        </div>*@
+                <input type="submit" class="btn btn-danger btn-block" value="Reject" asp-route-accepted="@false" asp-route-returnUrl="@ViewData["ReturnUrl"]" />
+            </div>*@
         @*<div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-success" value="Accept" asp-route-accepted="@true" asp-route-returnUrl="@ViewData["ReturnUrl"]" />
-            <input type="submit" class="btn btn-danger" value="Reject" asp-route-accepted="@false" asp-route-returnUrl="@ViewData["ReturnUrl"]" />
-        </div>*@
+                <input type="submit" class="btn btn-success" value="Accept" asp-route-accepted="@true" asp-route-returnUrl="@ViewData["ReturnUrl"]" />
+                <input type="submit" class="btn btn-danger" value="Reject" asp-route-accepted="@false" asp-route-returnUrl="@ViewData["ReturnUrl"]" />
+            </div>*@
 
     </div>
 
     @*<div class="col-md-14">
-        <a condition="@ViewData["ReturnUrl"] != null" class="btn btn-sm btn-block btn-default" href="@ViewData["ReturnUrl"]">Back</a>
-        <a condition="@ViewData["ReturnUrl"] == null" class="btn btn-sm btn-block btn-default" asp-action="Index">Back</a>
-    </div>*@
+            <a condition="@ViewData["ReturnUrl"] != null" class="btn btn-sm btn-block btn-default" href="@ViewData["ReturnUrl"]">Back</a>
+            <a condition="@ViewData["ReturnUrl"] == null" class="btn btn-sm btn-block btn-default" asp-action="Index">Back</a>
+        </div>*@
 </form>
+
+@*<table class="table table-condensed table-bordered" header header-content="Job position management">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Enabled</th>
+            <th>Exportable</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var domain in Model.Domains)
+        {
+            <tr>
+                <td>@domain.Id</td>
+                <td>@domain.Name</td>
+                <td>@domain.Type</td>
+                <td>@domain.Enabled</td>
+                <td>@domain.Exportable</td>
+            </tr>
+        }
+    </tbody>
+</table>*@
+
+
+
+

@@ -9,6 +9,8 @@ namespace CarnivorousPlants.Models.ProjectViewModel
     public class CreateViewModel
     {
         public string Name { get; set; }
+        public string Description { get; set; }
+        public Guid DomainId { get; set; }
         public virtual ICollection<Domain> Domains { get; set; }
     }
 }

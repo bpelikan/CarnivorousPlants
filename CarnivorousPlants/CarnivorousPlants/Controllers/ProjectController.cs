@@ -50,11 +50,12 @@ namespace CarnivorousPlants.Controllers
         [HttpPost]
         public IActionResult Create(CreateViewModel createViewModel)
         {
-            var project = trainingApi.CreateProject(createViewModel.Name);
-
+            var project = trainingApi.CreateProject(
+                            createViewModel.Name, 
+                            createViewModel.Description, 
+                            createViewModel.DomainId);
             //project.Settings.ClassificationType = "Multiclass";
-            var test = project.Settings;
-            var test2 = project.Settings.DomainId;
+            
             TempData["Success"] = $"The project <b>{createViewModel.Name}</b> has been successfully created.";
             return RedirectToAction(nameof(ProjectController.Index));
         }
