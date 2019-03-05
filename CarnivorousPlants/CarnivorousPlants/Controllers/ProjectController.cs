@@ -53,7 +53,8 @@ namespace CarnivorousPlants.Controllers
             var project = trainingApi.CreateProject(
                             createViewModel.Name, 
                             createViewModel.Description, 
-                            createViewModel.DomainId);
+                            createViewModel.DomainId,
+                            createViewModel.ClassificationType);
             //project.Settings.ClassificationType = "Multiclass";
             
             TempData["Success"] = $"The project <b>{createViewModel.Name}</b> has been successfully created.";
