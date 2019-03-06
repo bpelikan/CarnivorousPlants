@@ -34,7 +34,6 @@ namespace CarnivorousPlants.Controllers
 
         public IActionResult Index()
         {
-            //TempData["Success"] = "Test";
             IList<Project> vm = trainingApi.GetProjects();
             return View(vm);
         }
@@ -55,7 +54,6 @@ namespace CarnivorousPlants.Controllers
                             createViewModel.Description, 
                             createViewModel.DomainId,
                             createViewModel.ClassificationType);
-            //project.Settings.ClassificationType = "Multiclass";
             
             TempData["Success"] = $"The project <b>{createViewModel.Name}</b> has been successfully created.";
             return RedirectToAction(nameof(ProjectController.Index));
