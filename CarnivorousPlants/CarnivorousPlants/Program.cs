@@ -7,6 +7,7 @@ using CarnivorousPlants.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -17,8 +18,7 @@ namespace CarnivorousPlants
     {
         public static void Main(string[] args)
         {
-            //CreateWebHostBuilder(args).Build().Run();
-            var host = CreateWebHostBuilder(args);
+            var host = CreateWebHostBuilder(args).Build();
             MigrateDatabase(host);
             host.Run();
         }
@@ -32,10 +32,9 @@ namespace CarnivorousPlants
             }
         }
 
-        /*IWebHostBuilder*/
-        public static IWebHost CreateWebHostBuilder(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
+
     }
 }
