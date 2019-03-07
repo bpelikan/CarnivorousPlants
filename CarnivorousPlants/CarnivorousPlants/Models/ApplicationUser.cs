@@ -8,6 +8,6 @@ namespace CarnivorousPlants.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        //public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
