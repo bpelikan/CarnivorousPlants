@@ -1,0 +1,65 @@
+﻿@using CarnivorousPlants.Models.TagViewModel
+@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Create tag";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create tag</h1>
+<hr />
+
+<form asp-controller="Tag" asp-action="Create" asp-route-projectId="@Model.ProjectId" method="post" class="form-horizontal" role="form">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="ProjectId" class="col-md-2 control-label"></label>
+        <div>
+            <input asp-for="ProjectId" class="form-control" readonly="readonly" />
+            <span asp-validation-for="ProjectId" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Name" class="col-md-2 control-label"></label>
+        <div>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="col-md-2 control-label"></label>
+        <div>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+
+    <table class="table table-condensed table-bordered" header header-content="Classification">
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Tag Type</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var tagType in TagTypes.Types)
+            {
+                <tr>
+                    <td>@Html.RadioButtonFor(m => m.TagType, tagType)</td>
+                    <td>@tagType</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="form-group">
+        <div>
+            <input type="submit" class="btn btn-success btn-block" value="Create" />
+            <a class="btn btn-sm btn-block btn-outline-primary" asp-controller="Project" asp-action="Details" asp-route-projectId="@Model.ProjectId">Back</a>
+        </div>
+    </div>
+
+</form>

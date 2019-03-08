@@ -53,7 +53,13 @@
 </div>
 
 
-<h2>Tags</h2>
+<h2>
+    Tags
+    <a class="btn btn-outline-dark" asp-controller="Tag" asp-action="Create" asp-route-projectId="@Model.Project.Id">
+        <span class="oi oi-plus">
+        </span>
+    </a>
+</h2>
 <hr />
 <div>
     <table class="table table-condensed table-bordered" header header-content="Tags of project">
@@ -63,6 +69,7 @@
                 <th>Description</th>
                 <th>Type</th>
                 <th>ImageCount</th>
+                <th>Options</th>
             </tr>
         </thead>
 
@@ -74,6 +81,12 @@
                     <td>@tag.Description</td>
                     <td>@tag.Type</td>
                     <td>@tag.ImageCount</td>
+                    <td>
+                        <a class="btn btn-outline-dark" asp-controller="Tag" asp-action="Delete" asp-route-projectId="@Model.Project.Id" asp-route-tagId="@tag.Id" onclick="return confirm('Do you really want to delete this tag?');">
+                            <span class="oi oi-trash">
+                            </span>
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
