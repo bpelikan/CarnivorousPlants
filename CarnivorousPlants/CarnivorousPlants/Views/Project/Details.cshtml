@@ -1,77 +1,54 @@
-﻿@using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models
-@model Project
+﻿@model CarnivorousPlants.Models.ProjectViewModel.DetailsViewModel
 
 @{
-    ViewData["Title"] = @Model.Name;
+    ViewData["Title"] = @Model.Project.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>@Model.Name</h1>
+<h1>@Model.Project.Name</h1>
 <hr />
 
 <div>
     <dl class="dl-horizontal">
-        <img src="@Model.ThumbnailUri" />
+        <img src="@Model.Project.ThumbnailUri" />
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Project.Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Project.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Project.Description)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Project.Description)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Created)
+            @Html.DisplayNameFor(model => model.Project.Created)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Created)
+            @Html.DisplayFor(model => model.Project.Created)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.LastModified)
+            @Html.DisplayNameFor(model => model.Project.LastModified)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LastModified)
+            @Html.DisplayFor(model => model.Project.LastModified)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Settings)
+            @Html.DisplayNameFor(model => model.Project.Settings)
         </dt>
         <dd>
-            <b>@Html.DisplayNameFor(model => model.Settings.ClassificationType):</b>
-            @Html.DisplayFor(model => model.Settings.ClassificationType)
+            <b>@Html.DisplayNameFor(model => model.Project.Settings.ClassificationType):</b>
+            @Html.DisplayFor(model => model.Project.Settings.ClassificationType)
             <br />
-            <b>@Html.DisplayNameFor(model => model.Settings.DomainId):</b>
-            @Html.DisplayFor(model => model.Settings.DomainId)
+            <b>@Html.DisplayNameFor(model => model.DomainName):</b>
+            @Html.DisplayFor(model => model.DomainName)
         </dd>
         
     </dl>
-
-    @*<table class="table table-condensed table-bordered" header header-content="Domain">
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Type</th>
-                    <th>Type</th>
-                    <th>Type</th>
-                    <th>Type</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td>@Model.Name</td>
-                    <td>@Model.Description</td>
-                    <td>@Model.Created</td>
-                    <td>@Model.LastModified</td>
-                    <td>@Model.ThumbnailUri</td>
-                </tr>
-            </tbody>
-        </table>*@
 </div>
 
 

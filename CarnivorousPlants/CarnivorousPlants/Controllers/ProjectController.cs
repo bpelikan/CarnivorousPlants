@@ -38,6 +38,18 @@ namespace CarnivorousPlants.Controllers
             return View(vm);
         }
 
+        [Route("{projectId?}")]
+        public IActionResult Details(Guid projectId)
+        {
+            Project project = trainingApi.GetProject(projectId);
+            DetailsViewModel vm = new DetailsViewModel() {
+                Project = project,
+                DomainName = trainingApi.GetDomain(project.Settings.DomainId).Name,
+            };
+
+            return View(vm);
+        }
+
         public IActionResult Create()
         {
             CreateViewModel vm = new CreateViewModel() {
@@ -68,12 +80,7 @@ namespace CarnivorousPlants.Controllers
             return RedirectToAction(nameof(ProjectController.Index));
         }
 
-        [Route("{projectId?}")]
-        public IActionResult Details(Guid projectId)
-        {
-            var project = trainingApi.GetProject(projectId);
-            return View(project);
-        }
+        
 
         //public IActionResult Create(string name)
         //{
