@@ -8,9 +8,10 @@
 <h1>@Model.Project.Name</h1>
 <hr />
 
+<img src="@Model.Project.ThumbnailUri" />
+
 <div>
     <dl class="dl-horizontal">
-        <img src="@Model.Project.ThumbnailUri" />
 
         <dt>
             @Html.DisplayNameFor(model => model.Project.Name)
@@ -47,10 +48,34 @@
             <b>@Html.DisplayNameFor(model => model.DomainName):</b>
             @Html.DisplayFor(model => model.DomainName)
         </dd>
-        
+
     </dl>
 </div>
 
 
+<h2>Tags</h2>
+<hr />
+<div>
+    <table class="table table-condensed table-bordered" header header-content="Tags of project">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>ImageCount</th>
+            </tr>
+        </thead>
 
-
+        <tbody>
+            @foreach (var tag in Model.Tags)
+            {
+                <tr>
+                    <td>@tag.Name</td>
+                    <td>@tag.Description</td>
+                    <td>@tag.Type</td>
+                    <td>@tag.ImageCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

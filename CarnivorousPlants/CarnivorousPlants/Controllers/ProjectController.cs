@@ -35,6 +35,7 @@ namespace CarnivorousPlants.Controllers
         public IActionResult Index()
         {
             IList<Project> vm = trainingApi.GetProjects();
+
             return View(vm);
         }
 
@@ -45,6 +46,7 @@ namespace CarnivorousPlants.Controllers
             DetailsViewModel vm = new DetailsViewModel() {
                 Project = project,
                 DomainName = trainingApi.GetDomain(project.Settings.DomainId).Name,
+                Tags = trainingApi.GetTags(project.Id)
             };
 
             return View(vm);
@@ -55,6 +57,7 @@ namespace CarnivorousPlants.Controllers
             CreateViewModel vm = new CreateViewModel() {
                 Domains = trainingApi.GetDomains()
             };
+
             return View(vm);
         }
 
@@ -68,6 +71,7 @@ namespace CarnivorousPlants.Controllers
                             createViewModel.ClassificationType);
             
             TempData["Success"] = $"The project <b>{createViewModel.Name}</b> has been successfully created.";
+
             return RedirectToAction(nameof(ProjectController.Index));
         }
 
@@ -76,7 +80,9 @@ namespace CarnivorousPlants.Controllers
         {
             var projectName = trainingApi.GetProject(projectId).Name;
             trainingApi.DeleteProject(projectId);
+
             TempData["Success"] = $"The project <b>{projectName}</b> has been successfully deleted.";
+
             return RedirectToAction(nameof(ProjectController.Index));
         }
 
