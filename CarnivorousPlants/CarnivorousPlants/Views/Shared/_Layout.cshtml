@@ -41,7 +41,7 @@
                         <li condition="@SignInManager.IsSignedIn(User)" class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Plants" asp-action="SendPhoto">Recognize</a>
                         </li>
-                        <li  class="nav-item">
+                        <li condition="@SignInManager.IsSignedIn(User)" class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">Projects</a>
                         </li>
                     </ul>
