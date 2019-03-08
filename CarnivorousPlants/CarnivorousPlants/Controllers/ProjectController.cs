@@ -68,6 +68,13 @@ namespace CarnivorousPlants.Controllers
             return RedirectToAction(nameof(ProjectController.Index));
         }
 
+        [Route("{projectId?}")]
+        public IActionResult Details(Guid projectId)
+        {
+            var project = trainingApi.GetProject(projectId);
+            return View(project);
+        }
+
         //public IActionResult Create(string name)
         //{
         //    var project = trainingApi.CreateProject(name);

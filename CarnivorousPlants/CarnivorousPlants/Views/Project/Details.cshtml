@@ -1,0 +1,79 @@
+﻿@using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models
+@model Project
+
+@{
+    ViewData["Title"] = @Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.Name</h1>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <img src="@Model.ThumbnailUri" />
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModified)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastModified)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Settings)
+        </dt>
+        <dd>
+            <b>@Html.DisplayNameFor(model => model.Settings.ClassificationType):</b>
+            @Html.DisplayFor(model => model.Settings.ClassificationType)
+            <br />
+            <b>@Html.DisplayNameFor(model => model.Settings.DomainId):</b>
+            @Html.DisplayFor(model => model.Settings.DomainId)
+        </dd>
+        
+    </dl>
+
+    @*<table class="table table-condensed table-bordered" header header-content="Domain">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Type</th>
+                    <th>Type</th>
+                    <th>Type</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>@Model.Name</td>
+                    <td>@Model.Description</td>
+                    <td>@Model.Created</td>
+                    <td>@Model.LastModified</td>
+                    <td>@Model.ThumbnailUri</td>
+                </tr>
+            </tbody>
+        </table>*@
+</div>
+
+
+
+
