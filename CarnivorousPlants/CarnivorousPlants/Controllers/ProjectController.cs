@@ -43,10 +43,12 @@ namespace CarnivorousPlants.Controllers
         public IActionResult Details(Guid projectId)
         {
             Project project = trainingApi.GetProject(projectId);
+            //trainingApi.GetTaggedImages();
             DetailsViewModel vm = new DetailsViewModel() {
                 Project = project,
                 DomainName = trainingApi.GetDomain(project.Settings.DomainId).Name,
-                Tags = trainingApi.GetTags(project.Id)
+                Tags = trainingApi.GetTags(project.Id),
+                Images = trainingApi.GetTaggedImages(projectId),
             };
 
             return View(vm);
@@ -85,8 +87,6 @@ namespace CarnivorousPlants.Controllers
 
             return RedirectToAction(nameof(ProjectController.Index));
         }
-
-        
 
         //public IActionResult Create(string name)
         //{

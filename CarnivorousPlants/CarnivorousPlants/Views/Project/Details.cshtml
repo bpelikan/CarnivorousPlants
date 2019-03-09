@@ -92,3 +92,52 @@
         </tbody>
     </table>
 </div>
+
+
+<h2>
+    Images
+    <a class="btn btn-outline-dark" asp-controller="Image" asp-action="Create" asp-route-projectId="@Model.Project.Id">
+        <span class="oi oi-plus">
+        </span>
+    </a>
+</h2>
+<div>
+    <table class="table table-condensed table-bordered" header header-content="Tags of project">
+        <thead>
+            <tr>
+                @*<th>Id</th>
+                <th>Height x Width</th>
+                <th>Created</th>*@
+                <th>Image</th>
+                <th>Tags</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var image in Model.Images)
+            {
+                <tr>
+                    @*<td>@image.Id</td>
+                    <td>@image.Height x @image.Width</td>
+                    <td>@image.Created</td>*@
+                    
+                    <td>
+                        <img src="@image.ThumbnailUri" />
+                    </td>
+                    <td>
+                        @foreach (var tag in @image.Tags)
+                        {
+                            @tag.TagName@:
+                        }
+                    </td>
+                    @*<td>
+                        <a class="btn btn-outline-dark" asp-controller="Tag" asp-action="Delete" asp-route-projectId="@Model.Project.Id" asp-route-tagId="@image.Id" onclick="return confirm('Do you really want to delete this tag?');">
+                            <span class="oi oi-trash">
+                            </span>
+                        </a>
+                    </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
