@@ -91,5 +91,12 @@ namespace CarnivorousPlants.Controllers
 
             return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
         }
+
+        [Route("{projectId?}/{imageId?}")]
+        public IActionResult Delete(Guid projectId, Guid imageId)
+        {
+            trainingApi.DeleteImages(projectId, new List<string>() { imageId.ToString() });
+            return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
+        }
     }
 }
