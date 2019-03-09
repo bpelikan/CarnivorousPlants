@@ -18,10 +18,10 @@ namespace CarnivorousPlants.Models.ProjectViewModel
     public static class ClassificationType
     {
         public const string Multiclass = "Multiclass";
-        public const string Multilabel = "Multilabel";
+        //public const string Multilabel = "Multilabel";
         public static HashSet<string> Types = new HashSet<string>() {
                     Multiclass,
-                    Multilabel,
+                    //Multilabel,
         };
     }
 }
