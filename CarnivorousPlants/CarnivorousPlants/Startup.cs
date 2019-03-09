@@ -46,7 +46,7 @@ namespace CarnivorousPlants
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddSingleton<IPhotoStorageService, PhotoStorageService>();
+            services.AddSingleton<IImageStorageService, ImageStorageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

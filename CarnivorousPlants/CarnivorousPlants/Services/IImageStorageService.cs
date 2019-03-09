@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CarnivorousPlants.Services
 {
-    public interface IPhotoStorageService
+    public interface IImageStorageService
     {
-        Task<string> SavePhotoAsync(Stream CvStream, string fileName);
+        Task<string> SaveImageAsync(Stream CvStream, string fileName);
         //Task<bool> DeletePhotoAsync(string photoId);
         string UriFor(string photoId);
     }

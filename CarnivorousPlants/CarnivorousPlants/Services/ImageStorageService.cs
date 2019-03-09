@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CarnivorousPlants.Services
 {
-    public class PhotoStorageService : IPhotoStorageService
+    public class ImageStorageService : IImageStorageService
     {
         private readonly IConfiguration _configuration;
 
@@ -18,7 +18,7 @@ namespace CarnivorousPlants.Services
         string blobAccountName;
         string blobKeyValue;
 
-        public PhotoStorageService(IConfiguration configuration)
+        public ImageStorageService(IConfiguration configuration)
         {
             _configuration = configuration;
 
@@ -29,11 +29,11 @@ namespace CarnivorousPlants.Services
             blobClient = new CloudBlobClient(new Uri(baseBlobUri), credential);
         }
 
-        public async Task<string> SavePhotoAsync(Stream CvStream, string fileName)
+        public async Task<string> SaveImageAsync(Stream CvStream, string fileName)
         {
             var photoId = Guid.NewGuid().ToString() + "." + Path.GetFileNameWithoutExtension(fileName) + Path.GetExtension(fileName);
 
-            var container = blobClient.GetContainerReference("photostorage");
+            var container = blobClient.GetContainerReference("imagestorage");
             await container.CreateIfNotExistsAsync();
             var blob = container.GetBlockBlobReference(photoId);
             blob.Properties.ContentType = "image/jpg";
@@ -59,10 +59,10 @@ namespace CarnivorousPlants.Services
                 SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-1),
                 SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(1)
             };
-            var container = blobClient.GetContainerReference("photostorage");
+            var container = blobClient.GetContainerReference("imagestorage");
             var blob = container.GetBlockBlobReference(photoId);
             var sas = blob.GetSharedAccessSignature(sasPolicy);
-            return $"{baseBlobUri}photostorage/{photoId}{sas}";
+            return $"{baseBlobUri}imagestorage/{photoId}{sas}";
         }
     }
 }

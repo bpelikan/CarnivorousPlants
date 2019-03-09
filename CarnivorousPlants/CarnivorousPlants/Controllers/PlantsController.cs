@@ -22,7 +22,7 @@ namespace CarnivorousPlants.Controllers
     [Route("[controller]/[action]")]
     public class PlantsController : Controller
     {
-        private readonly IPhotoStorageService _photoStorageService;
+        private readonly IImageStorageService _imageStorageService;
         private readonly IConfiguration _configuration;
         private readonly string trainingKey;
         private readonly string predictionKey;
@@ -30,9 +30,9 @@ namespace CarnivorousPlants.Controllers
         private readonly CustomVisionPredictionClient endpoint;
         //private string predictionEndpoint2;
 
-        public PlantsController(IPhotoStorageService photoStorageService, IConfiguration configuration)
+        public PlantsController(IImageStorageService imageStorageService, IConfiguration configuration)
         {
-            _photoStorageService = photoStorageService;
+            _imageStorageService = imageStorageService;
             _configuration = configuration;
 
             trainingKey = configuration["trainingKey"];
@@ -66,7 +66,7 @@ namespace CarnivorousPlants.Controllers
             {
                 using (var stream = photo.OpenReadStream())
                 {
-                    var photoId = await _photoStorageService.SavePhotoAsync(stream, photo.FileName);
+                    var photoId = await _imageStorageService.SaveImageAsync(stream, photo.FileName);
                     return RedirectToAction(nameof(PlantsController.Recognize), new { photoId });
                 }
             }
@@ -81,7 +81,7 @@ namespace CarnivorousPlants.Controllers
         [Route("{photoId}")]
         public async Task<IActionResult> Recognize(string photoId)
         {
-            var photoUrl = _photoStorageService.UriFor(photoId);
+            var photoUrl = _imageStorageService.UriFor(photoId);
             ImageUrl imgUrl = new ImageUrl { Url = photoUrl };
 
             RecognizeViewModel recognizeViewModel = new RecognizeViewModel()
