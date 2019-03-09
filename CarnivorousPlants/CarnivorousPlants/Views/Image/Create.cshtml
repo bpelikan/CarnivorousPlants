@@ -1,0 +1,39 @@
+﻿@using CarnivorousPlants.Models.ImageViewModel
+@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Create Image";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create Image</h1>
+
+<form asp-controller="Image" asp-action="Create" asp-route-projectId="@Model.ProjectId" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group" hidden>
+        <label asp-for="ProjectId" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="ProjectId" class="form-control" readonly="readonly" />
+            <span asp-validation-for="ProjectId" class="text-danger"></span>
+        </div>
+    </div>
+
+    @*<div class="form-group" hidden>
+        <label asp-for="JobPositionName" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="JobPositionName" class="form-control" readonly="readonly" value="@Model.JobPositionName" />
+            <span asp-validation-for="JobPositionName" class="text-danger"></span>
+        </div>
+    </div>*@
+
+    @*<label asp-for="JobPositionName" class="col-md-2 control-label">@Html.DisplayFor(model => model.JobPositionName)</label>*@
+
+    <br /><br />
+
+    <input type="file" name="image" />
+    <hr />
+    <input class="btn btn-primary" type="submit" value="Send"/>
+    <a class="btn btn-sm btn-default" asp-controller="Project" asp-action="Details" asp-route-projectId="@Model.ProjectId">Back</a>
+</form>
+
