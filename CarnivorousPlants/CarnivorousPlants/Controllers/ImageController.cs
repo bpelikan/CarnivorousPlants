@@ -47,6 +47,7 @@ namespace CarnivorousPlants.Controllers
         {
             CreateViewModel vm = new CreateViewModel() {
                 ProjectId = projectId,
+                Tags = trainingApi.GetTags(projectId),
             };
             return View(vm);
         }
@@ -55,12 +56,19 @@ namespace CarnivorousPlants.Controllers
         [Route("{projectId?}")]
         public async Task<IActionResult> Create(Guid projectId, IFormFile image, CreateViewModel createViewModel)
         {
-            //if (!ModelState.IsValid)
-            //    return RedirectToAction(nameof(ImageController.Create), new { projectId });
+            if (!ModelState.IsValid)
+            {
+                if(createViewModel.TagId == null)
+                    TempData["Warning"] = "You must choose a tag for the photo.";
+
+                return RedirectToAction(nameof(ImageController.Create), new { projectId });
+            }
 
             string imageId = null;
             try
             {
+                if (image == null)
+                    throw new Exception("Choose an image to send.");
                 using (var stream = image.OpenReadStream())
                 {
                     imageId = await _imageStorageService.SaveImageAsync(stream, image.FileName);
@@ -73,13 +81,13 @@ namespace CarnivorousPlants.Controllers
             }
 
             var imageUrl = _imageStorageService.UriFor(imageId);
-            ImageUrlCreateEntry imageUrlCreateEntry = new ImageUrlCreateEntry(imageUrl);
+            ImageUrlCreateEntry imageUrlCreateEntry = new ImageUrlCreateEntry(imageUrl, new List<Guid>() { Guid.Parse(createViewModel.TagId) });
             IList<ImageUrlCreateEntry> imageUrlCreateEntries = new List<ImageUrlCreateEntry>() {imageUrlCreateEntry};
             ImageUrlCreateBatch url = new ImageUrlCreateBatch(imageUrlCreateEntries);
 
             trainingApi.CreateImagesFromUrls(projectId, url);
 
-            TempData["Success"] = $"The project <b>{projectId}</b> has been successfully created.";
+            TempData["Success"] = $"The image has been successfully uploaded.";
 
             return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
         }
