@@ -127,7 +127,12 @@
                     <td>
                         @foreach (var tag in @image.Tags)
                         {
-                            @tag.TagName@:
+                            @tag.TagName@: 
+                            <br />
+                            <a Condition="@image.Tags.LastOrDefault() == tag" class="btn btn-outline-dark" asp-controller="Image" asp-action="ChangeImageTag" asp-route-projectId="@Model.Project.Id" asp-route-imageId="@image.Id">
+                                <span class="oi oi-pencil">
+                                </span>
+                            </a>
                         }
                     </td>
                     <th>
@@ -167,7 +172,13 @@
                     <td>
                         <img src="@image.ThumbnailUri" />
                     </td>
-                    <th></th>
+                    <th>
+                        <a class="btn btn-outline-dark" asp-controller="Image" asp-action="ChangeImageTag" asp-route-projectId="@Model.Project.Id" asp-route-imageId="@image.Id">
+                            <span class="oi oi-pencil">
+                            </span>
+                        </a>
+
+                    </th>
                     <th>
                         <a class="btn btn-outline-dark" asp-controller="Image" asp-action="Delete" asp-route-projectId="@Model.Project.Id" asp-route-imageId="@image.Id" onclick="return confirm('Do you really want to delete this image?');">
                             <span class="oi oi-trash">

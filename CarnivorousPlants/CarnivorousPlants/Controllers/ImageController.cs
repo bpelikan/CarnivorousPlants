@@ -7,6 +7,7 @@ using CarnivorousPlants.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
 using Microsoft.Extensions.Configuration;
@@ -98,5 +99,44 @@ namespace CarnivorousPlants.Controllers
             trainingApi.DeleteImages(projectId, new List<string>() { imageId.ToString() });
             return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
         }
+
+        [Route("{projectId?}/{imageId?}")]
+        public IActionResult ChangeImageTag(Guid projectId, Guid imageId)
+        {
+            ChangeImageTagViewModel vm = new ChangeImageTagViewModel() {
+                ProjectId = projectId,
+                Image = trainingApi.GetImagesByIds(projectId, new List<string>() { imageId.ToString() }).FirstOrDefault(),
+                TagsSelectList = new SelectList(trainingApi.GetTags(projectId), "Id", "Name"),// trainingApi.GetTags(projectId),
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [Route("{projectId?}/{imageId?}")]
+        public async Task<IActionResult> ChangeImageTag(Guid projectId, Guid imageId, ChangeImageTagViewModel changeImageTagViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                if (changeImageTagViewModel.TagId == null)
+                    TempData["Warning"] = "You must choose a tag for the photo.";
+                return RedirectToAction(nameof(ImageController.ChangeImageTag), new { projectId, imageId });
+            }
+
+            Image image = trainingApi.GetImagesByIds(projectId, new List<string>() { imageId.ToString() }).FirstOrDefault();
+            IList<string> tagsList = image.Tags?.Select(x => x.TagId.ToString()).ToList();
+
+            if(tagsList != null)
+                trainingApi.DeleteImageTags(projectId, new List<string>() { imageId.ToString() }, tagsList);
+
+            ImageTagCreateEntry imageTagCreateEntry = new ImageTagCreateEntry(imageId, Guid.Parse(changeImageTagViewModel.TagId));
+            IList<ImageTagCreateEntry> imageTagCreateEntries = new List<ImageTagCreateEntry>() { imageTagCreateEntry };
+            ImageTagCreateBatch createBatch = new ImageTagCreateBatch(imageTagCreateEntries);
+
+            trainingApi.CreateImageTags(projectId, createBatch);
+
+            return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
+        }
+
     }
 }
