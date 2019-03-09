@@ -102,19 +102,19 @@
     </a>
 </h2>
 <div>
-    <table class="table table-condensed table-bordered" header header-content="Tags of project">
+    <table class="table table-condensed table-bordered" header header-content="Tagged images">
         <thead>
             <tr>
                 @*<th>Id</th>
                 <th>Height x Width</th>
                 <th>Created</th>*@
-                <th>Image</th>
+                <th>Image tagged</th>
                 <th>Tags</th>
             </tr>
         </thead>
 
         <tbody>
-            @foreach (var image in Model.Images)
+            @foreach (var image in Model.ImagesTagged)
             {
                 <tr>
                     @*<td>@image.Id</td>
@@ -135,6 +135,36 @@
                             <span class="oi oi-trash">
                             </span>
                         </a>
+                    </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <table class="table table-condensed table-bordered" header header-content="Untagges images">
+        <thead>
+            <tr>
+                <th>Image untagged</th>
+                <th>Tags</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var image in Model.ImagesUntagged)
+            {
+                <tr>
+                    <td>
+                        <img src="@image.ThumbnailUri" />
+                    </td>
+                    <th></th>
+
+                    @*<td>
+                        @foreach (var tag in @image.Tags)
+                        {
+                            @tag.TagName@:
+                        }
                     </td>*@
                 </tr>
             }

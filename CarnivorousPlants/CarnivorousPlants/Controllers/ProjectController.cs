@@ -48,7 +48,8 @@ namespace CarnivorousPlants.Controllers
                 Project = project,
                 DomainName = trainingApi.GetDomain(project.Settings.DomainId).Name,
                 Tags = trainingApi.GetTags(project.Id),
-                Images = trainingApi.GetTaggedImages(projectId),
+                ImagesTagged = trainingApi.GetTaggedImages(projectId),
+                ImagesUntagged = trainingApi.GetUntaggedImages(projectId),
             };
 
             return View(vm);
