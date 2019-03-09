@@ -23,7 +23,18 @@
     <br />
     <br />
 
+
     <div>
+        <div>
+            <b>@Html.DisplayNameFor(model => model.TagId)</b>
+            <select asp-for="TagId" class="form-control" asp-items="@Model.TagsSelectList">
+                <option selected value="">--- SELECT ---</option>
+            </select>
+        </div>
+    </div>
+    <hr />
+
+    @*<div>
         <table class="table table-condensed table-bordered" header header-content="Classification">
             <thead>
                 <tr>
@@ -42,10 +53,10 @@
                 }
             </tbody>
         </table>
-    </div>
+    </div>*@
 
     <hr />
-    <input class="btn btn-primary" type="submit" value="Send" />
-    <a class="btn btn-sm btn-default" asp-controller="Project" asp-action="Details" asp-route-projectId="@Model.ProjectId">Back</a>
+    <input class="btn btn-primary btn-block" type="submit" value="Send" />
+    <a class="btn btn-outline-primary btn-block" asp-controller="Project" asp-action="Details" asp-route-projectId="@Model.ProjectId">Back</a>
 </form>
 

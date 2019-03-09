@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,6 +14,7 @@ namespace CarnivorousPlants.Models.ImageViewModel
 
         [Required]
         public string TagId { get; set; }
-        public IList<Tag> Tags { get; set; }
+        //public IList<Tag> Tags { get; set; }
+        public SelectList TagsSelectList { get; set; }
     }
 }

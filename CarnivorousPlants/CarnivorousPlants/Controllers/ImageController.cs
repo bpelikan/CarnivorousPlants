@@ -48,7 +48,8 @@ namespace CarnivorousPlants.Controllers
         {
             CreateViewModel vm = new CreateViewModel() {
                 ProjectId = projectId,
-                Tags = trainingApi.GetTags(projectId),
+                TagsSelectList = new SelectList(trainingApi.GetTags(projectId), "Id", "Name"),
+                //Tags = trainingApi.GetTags(projectId),
             };
             return View(vm);
         }
@@ -106,7 +107,7 @@ namespace CarnivorousPlants.Controllers
             ChangeImageTagViewModel vm = new ChangeImageTagViewModel() {
                 ProjectId = projectId,
                 Image = trainingApi.GetImagesByIds(projectId, new List<string>() { imageId.ToString() }).FirstOrDefault(),
-                TagsSelectList = new SelectList(trainingApi.GetTags(projectId), "Id", "Name"),// trainingApi.GetTags(projectId),
+                TagsSelectList = new SelectList(trainingApi.GetTags(projectId), "Id", "Name"),
             };
 
             return View(vm);
