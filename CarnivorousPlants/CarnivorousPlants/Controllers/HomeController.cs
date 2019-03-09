@@ -12,7 +12,8 @@ namespace CarnivorousPlants.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            //return View();
+            return RedirectToAction(nameof(ProjectController.Index), "Project");
         }
 
         public IActionResult Privacy()
