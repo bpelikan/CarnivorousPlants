@@ -102,13 +102,13 @@
     </a>
 </h2>
 <div>
-    <table class="table table-condensed table-bordered" header header-content="Tagged images">
-        <thead>
+    <table class="table table-condensed table-bordered" header header-content="Images">
+        <thead style="background-color:lightgrey">
             <tr>
                 @*<th>Id</th>
                 <th>Height x Width</th>
                 <th>Created</th>*@
-                <th>Image tagged</th>
+                <th>Tagged</th>
                 <th>Tags</th>
                 <th>Option</th>
             </tr>
@@ -127,7 +127,7 @@
                     <td>
                         @foreach (var tag in @image.Tags)
                         {
-                            @tag.TagName@: 
+                            @tag.TagName@:
                             <br />
                             <a Condition="@image.Tags.LastOrDefault() == tag" class="btn btn-outline-dark" asp-controller="Image" asp-action="ChangeImageTag" asp-route-projectId="@Model.Project.Id" asp-route-imageId="@image.Id">
                                 <span class="oi oi-pencil">
@@ -151,14 +151,10 @@
                 </tr>
             }
         </tbody>
-    </table>
-</div>
 
-<div>
-    <table class="table table-condensed table-bordered" header header-content="Untagges images">
-        <thead>
+        <thead Condition="Model.ImagesUntagged.Count != 0" style="background-color:lightgrey">
             <tr>
-                <th>Image untagged</th>
+                <th>Untagged</th>
                 <th>Tags</th>
                 <th>Option</th>
 
@@ -197,3 +193,41 @@
         </tbody>
     </table>
 </div>
+
+@*<div>
+    <table class="table table-condensed table-bordered" header header-content="Untagges images">
+        <thead>
+            <tr>
+                <th>Image untagged</th>
+                <th>Tags</th>
+                <th>Option</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var image in Model.ImagesUntagged)
+            {
+                <tr>
+                    <td>
+                        <img src="@image.ThumbnailUri" />
+                    </td>
+                    <th>
+                        <a class="btn btn-outline-dark" asp-controller="Image" asp-action="ChangeImageTag" asp-route-projectId="@Model.Project.Id" asp-route-imageId="@image.Id">
+                            <span class="oi oi-pencil">
+                            </span>
+                        </a>
+
+                    </th>
+                    <th>
+                        <a class="btn btn-outline-dark" asp-controller="Image" asp-action="Delete" asp-route-projectId="@Model.Project.Id" asp-route-imageId="@image.Id" onclick="return confirm('Do you really want to delete this image?');">
+                            <span class="oi oi-trash">
+                            </span>
+                        </a>
+                    </th>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>*@
