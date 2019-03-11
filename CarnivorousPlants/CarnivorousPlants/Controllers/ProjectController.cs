@@ -91,7 +91,7 @@ namespace CarnivorousPlants.Controllers
         }
 
         [Route("{projectId?}")]
-        public async Task<IActionResult> Train(Guid projectId)
+        public IActionResult Train(Guid projectId)
         {
             var projectName = trainingApi.GetProject(projectId).Name;
             trainingApi.TrainProject(projectId);
@@ -110,6 +110,20 @@ namespace CarnivorousPlants.Controllers
             //trainingApi.UpdateIteration(projectId, iteration.Id, iteration);
 
             TempData["Success"] = $"The project <b>{projectName}</b> has been successfully trained.";
+
+            return RedirectToAction(nameof(ProjectController.Details), new { projectId });
+        }
+
+        [Route("{projectId?}/{iterationId?}")]
+        public IActionResult SetDefaultIteration(Guid projectId, Guid iterationId)
+        {
+            var projectName = trainingApi.GetProject(projectId).Name;
+
+            Iteration iteration = trainingApi.GetIteration(projectId, iterationId);
+            iteration.IsDefault = true;
+            trainingApi.UpdateIteration(projectId, iteration.Id, iteration);
+
+            TempData["Success"] = $"The iteration <b>{iteration.Name}</b> has been successfully set as default.";
 
             return RedirectToAction(nameof(ProjectController.Details), new { projectId });
         }

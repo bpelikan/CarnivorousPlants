@@ -79,7 +79,13 @@
                 <tr>
                     <td>@iteration.Name</td>
                     <td>@iteration.Status</td>
-                    <td>@iteration.IsDefault</td>
+                    <td>
+                        @iteration.IsDefault
+                        <a Condition="@iteration.IsDefault == false && @iteration.TrainedAt != null" asp-controller="Project" asp-action="SetDefaultIteration" asp-route-projectId="@Model.Project.Id" asp-route-iterationId="@iteration.Id">
+                            <span class="oi oi-pencil">
+                            </span>
+                        </a>
+                    </td>
                     <td>@iteration.TrainedAt</td>
                     <td>@iteration.Created</td>
                     <td>@iteration.LastModified</td>
