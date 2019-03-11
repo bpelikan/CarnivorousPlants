@@ -72,7 +72,7 @@ namespace CarnivorousPlants.Controllers
                             createViewModel.Description, 
                             createViewModel.DomainId,
                             createViewModel.ClassificationType);
-            
+
             TempData["Success"] = $"The project <b>{createViewModel.Name}</b> has been successfully created.";
 
             return RedirectToAction(nameof(ProjectController.Index));
@@ -87,6 +87,17 @@ namespace CarnivorousPlants.Controllers
             TempData["Success"] = $"The project <b>{projectName}</b> has been successfully deleted.";
 
             return RedirectToAction(nameof(ProjectController.Index));
+        }
+
+        [Route("{projectId?}")]
+        public IActionResult Train(Guid projectId)
+        {
+            var projectName = trainingApi.GetProject(projectId).Name;
+            trainingApi.TrainProject(projectId);
+
+            TempData["Success"] = $"The project <b>{projectName}</b> has been successfully trained.";
+
+            return RedirectToAction(nameof(ProjectController.Details), new { projectId });
         }
 
         //public IActionResult Create(string name)
