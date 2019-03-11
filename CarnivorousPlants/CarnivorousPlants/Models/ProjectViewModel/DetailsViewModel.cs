@@ -11,6 +11,7 @@ namespace CarnivorousPlants.Models.ProjectViewModel
         public Project Project { get; set; }
         public string DomainName { get; set; }
         public IList<Tag> Tags { get; set; }
+        public IList<Iteration> Iterations { get; set; }
         public IList<Image> ImagesTagged { get; set; }
         public IList<Image> ImagesUntagged { get; set; }
     }

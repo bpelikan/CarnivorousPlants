@@ -57,6 +57,48 @@
 <br />
 
 <h2>
+    Iterations
+</h2>
+<div>
+    <table class="table table-condensed table-bordered" header header-content="Iterations">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>IsDefault</th>
+                <th>TrainedAt</th>
+                <th>Created</th>
+                <th>LastModified</th>
+                <th>ClassificationType</th>
+                <th>Exportable</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var iteration in Model.Iterations)
+            {
+                <tr>
+                    <td>@iteration.Name</td>
+                    <td>@iteration.Status</td>
+                    <td>@iteration.IsDefault</td>
+                    <td>@iteration.TrainedAt</td>
+                    <td>@iteration.Created</td>
+                    <td>@iteration.LastModified</td>
+                    <td>@iteration.ClassificationType</td>
+                    <td>@iteration.Exportable</td>
+                    @*<td>
+                        <a class="btn btn-outline-dark" asp-controller="Tag" asp-action="Delete" asp-route-projectId="@Model.Project.Id" asp-route-tagId="@tag.Id" onclick="return confirm('Do you really want to delete this tag?');">
+                            <span class="oi oi-trash">
+                            </span>
+                        </a>
+                    </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<h2>
     Tags
     <a class="btn btn-outline-dark" asp-controller="Tag" asp-action="Create" asp-route-projectId="@Model.Project.Id">
         <span class="oi oi-plus">

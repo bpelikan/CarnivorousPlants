@@ -48,6 +48,7 @@ namespace CarnivorousPlants.Controllers
                 Project = project,
                 DomainName = trainingApi.GetDomain(project.Settings.DomainId).Name,
                 Tags = trainingApi.GetTags(project.Id),
+                Iterations = trainingApi.GetIterations(projectId),
                 ImagesTagged = trainingApi.GetTaggedImages(projectId),
                 ImagesUntagged = trainingApi.GetUntaggedImages(projectId),
             };
@@ -90,10 +91,23 @@ namespace CarnivorousPlants.Controllers
         }
 
         [Route("{projectId?}")]
-        public IActionResult Train(Guid projectId)
+        public async Task<IActionResult> Train(Guid projectId)
         {
             var projectName = trainingApi.GetProject(projectId).Name;
             trainingApi.TrainProject(projectId);
+            //Iteration iter = trainingApi.TrainProject(projectId);
+            //Guid iterationId = iter.Id;
+
+            ////IList<Iteration> iterations = trainingApi.GetIterations(projectId);
+            ////foreach (Iteration it in iterations)
+            ////{
+            ////    it.IsDefault = false;
+            ////    trainingApi.UpdateIteration(projectId, it.Id, it);
+            ////}
+
+            //Iteration iteration = trainingApi.GetIteration(projectId, iterationId);
+            //iteration.IsDefault = true;
+            //trainingApi.UpdateIteration(projectId, iteration.Id, iteration);
 
             TempData["Success"] = $"The project <b>{projectName}</b> has been successfully trained.";
 
