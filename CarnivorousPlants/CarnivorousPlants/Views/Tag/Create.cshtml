@@ -12,7 +12,7 @@
 <form asp-controller="Tag" asp-action="Create" asp-route-projectId="@Model.ProjectId" method="post" class="form-horizontal" role="form">
     <div asp-validation-summary="All" class="text-danger"></div>
 
-    <div class="form-group">
+    <div class="form-group" hidden>
         <label asp-for="ProjectId" class="col-md-2 control-label"></label>
         <div>
             <input asp-for="ProjectId" class="form-control" readonly="readonly" />
