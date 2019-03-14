@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Rest;
 
 namespace CarnivorousPlants.Controllers
 {
@@ -94,7 +95,18 @@ namespace CarnivorousPlants.Controllers
         public IActionResult Train(Guid projectId)
         {
             var projectName = trainingApi.GetProject(projectId).Name;
-            trainingApi.TrainProject(projectId);
+
+
+            try
+            {
+                trainingApi.TrainProject(projectId);
+                TempData["Success"] = $"The project <b>{projectName}</b> has been successfully trained.";
+            }
+            catch (HttpOperationException ex)
+            {
+                TempData["Error"] = ex.Response.Content;
+            }
+
             //Iteration iter = trainingApi.TrainProject(projectId);
             //Guid iterationId = iter.Id;
 
@@ -109,7 +121,6 @@ namespace CarnivorousPlants.Controllers
             //iteration.IsDefault = true;
             //trainingApi.UpdateIteration(projectId, iteration.Id, iteration);
 
-            TempData["Success"] = $"The project <b>{projectName}</b> has been successfully trained.";
 
             return RedirectToAction(nameof(ProjectController.Details), new { projectId });
         }
