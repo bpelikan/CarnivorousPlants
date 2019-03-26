@@ -43,7 +43,7 @@
                 <td>@project.Description</td>
                 <td>@project.Created.ToString("dd/MM/yyyy HH:mm:ss")</td>
                 <td>@project.LastModified</td>
-                <td><img src="@project.ThumbnailUri"/></td>
+                <td><img Condition="@project.ThumbnailUri != null" src="@project.ThumbnailUri" height="200" width="200" class="img-thumbnail"/></td>
                 <td>
                     <a class="btn btn-outline-dark" asp-action="Delete" asp-route-projectId="@project.Id" onclick="return confirm('Do you really want to delete this project?');">
                         <span class="oi oi-trash">

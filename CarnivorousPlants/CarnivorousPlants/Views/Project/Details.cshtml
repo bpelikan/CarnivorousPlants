@@ -8,7 +8,7 @@
 <h1>@Model.Project.Name</h1>
 <hr />
 
-<img src="@Model.Project.ThumbnailUri" />
+<img Condition="@Model.Project.ThumbnailUri != null" src="@Model.Project.ThumbnailUri" height="200" width="200" class="img-thumbnail"/>
 
 <div>
     <dl class="dl-horizontal">
@@ -173,7 +173,7 @@
                         <td>@image.Height x @image.Width</td>
                         <td>@image.Created</td>*@
                     <td>
-                        <img src="@image.ThumbnailUri" />
+                        <img src="@image.ThumbnailUri" height="200" width="200" class="img-thumbnail"/>
                     </td>
                     <td>
                         @foreach (var tag in @image.Tags)
