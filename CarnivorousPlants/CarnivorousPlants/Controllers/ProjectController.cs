@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarnivorousPlants.Data;
+using CarnivorousPlants.Models;
 using CarnivorousPlants.Models.ProjectViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +19,15 @@ namespace CarnivorousPlants.Controllers
     public class ProjectController : Controller
     {
         private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _context;
 
         private readonly string trainingKey;
         private readonly CustomVisionTrainingClient trainingApi;
 
-        public ProjectController(IConfiguration configuration)
+        public ProjectController(IConfiguration configuration, ApplicationDbContext context)
         {
             _configuration = configuration;
+            _context = context;
 
             trainingKey = configuration["trainingKey"];
             trainingApi = new CustomVisionTrainingClient()
@@ -74,6 +78,13 @@ namespace CarnivorousPlants.Controllers
                             createViewModel.Description, 
                             createViewModel.DomainId,
                             createViewModel.ClassificationType);
+
+            MyProject myProject = new MyProject()
+            {
+                MyProjectId = project.Id
+            };
+            _context.MyProjects.Add(myProject);
+            _context.SaveChanges();
 
             TempData["Success"] = $"The project <b>{createViewModel.Name}</b> has been successfully created.";
 
