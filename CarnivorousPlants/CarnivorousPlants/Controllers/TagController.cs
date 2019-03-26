@@ -67,7 +67,7 @@ namespace CarnivorousPlants.Controllers
         {
             var tagName = trainingApi.GetTag(projectId, tagId).Name;
             trainingApi.DeleteTag(projectId, tagId);
-
+            
             TempData["Success"] = $"The tag <b>{tagName}</b> has been successfully deleted.";
 
             return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });

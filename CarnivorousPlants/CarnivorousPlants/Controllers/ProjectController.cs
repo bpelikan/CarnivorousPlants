@@ -121,7 +121,6 @@ namespace CarnivorousPlants.Controllers
             //iteration.IsDefault = true;
             //trainingApi.UpdateIteration(projectId, iteration.Id, iteration);
 
-
             return RedirectToAction(nameof(ProjectController.Details), new { projectId });
         }
 
