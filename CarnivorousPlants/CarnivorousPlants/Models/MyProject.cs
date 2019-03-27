@@ -8,6 +8,6 @@ namespace CarnivorousPlants.Models
     public class MyProject
     {
         public Guid MyProjectId { get; set; }
-
+        public string CreatedBy { get; set; }
     }
 }

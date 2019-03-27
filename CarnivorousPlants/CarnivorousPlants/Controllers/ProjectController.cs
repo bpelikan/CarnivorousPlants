@@ -6,6 +6,7 @@ using CarnivorousPlants.Data;
 using CarnivorousPlants.Models;
 using CarnivorousPlants.Models.ProjectViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
@@ -20,14 +21,16 @@ namespace CarnivorousPlants.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly string trainingKey;
         private readonly CustomVisionTrainingClient trainingApi;
 
-        public ProjectController(IConfiguration configuration, ApplicationDbContext context)
+        public ProjectController(IConfiguration configuration, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _configuration = configuration;
             _context = context;
+            _userManager = userManager;
 
             trainingKey = configuration["trainingKey"];
             trainingApi = new CustomVisionTrainingClient()
@@ -81,7 +84,8 @@ namespace CarnivorousPlants.Controllers
 
             MyProject myProject = new MyProject()
             {
-                MyProjectId = project.Id
+                MyProjectId = project.Id,
+                CreatedBy = _userManager.GetUserId(HttpContext.User)
             };
             _context.MyProjects.Add(myProject);
             _context.SaveChanges();
@@ -96,6 +100,13 @@ namespace CarnivorousPlants.Controllers
         {
             var projectName = trainingApi.GetProject(projectId).Name;
             trainingApi.DeleteProject(projectId);
+
+            var project = _context.MyProjects.FirstOrDefault(x => x.MyProjectId == projectId);
+            if (project != null)
+            {
+                _context.Remove(project);
+                _context.SaveChanges();
+            }
 
             TempData["Success"] = $"The project <b>{projectName}</b> has been successfully deleted.";
 
