@@ -80,7 +80,8 @@ namespace CarnivorousPlants.Controllers
                             createViewModel.Name, 
                             createViewModel.Description, 
                             createViewModel.DomainId,
-                            createViewModel.ClassificationType);
+                            ClassificationType.Multiclass);
+                            //createViewModel.ClassificationType);
 
             MyProject myProject = new MyProject()
             {
