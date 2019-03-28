@@ -76,7 +76,14 @@
         <tbody>
             @foreach (var iteration in Model.Iterations)
             {
-                <tr>
+                @if (@iteration.IsDefault == true)
+                {
+                    @:<tr style="font-weight: bold">
+                }
+                else
+                {
+                    @:<tr style="color: grey">
+                }
                     <td>@iteration.Name</td>
                     <td>@iteration.Status</td>
                     <td>
@@ -97,7 +104,7 @@
                             </span>
                         </a>
                     </td>*@
-                </tr>
+                @:</tr>
             }
         </tbody>
     </table>
