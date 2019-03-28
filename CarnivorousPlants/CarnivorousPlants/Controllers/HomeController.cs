@@ -13,7 +13,7 @@ namespace CarnivorousPlants.Controllers
         public IActionResult Index()
         {
             //return View();
-            return RedirectToAction(nameof(ProjectController.Index), "Project");
+            return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
         }
 
         public IActionResult Privacy()
