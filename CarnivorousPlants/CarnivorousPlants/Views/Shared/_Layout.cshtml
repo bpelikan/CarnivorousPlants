@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CarnivorousPlants</title>
     <link rel="stylesheet" href="~/open-iconic/font/css/open-iconic-bootstrap.css">
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css">*@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -38,7 +39,10 @@
                         @*<li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                             </li>*@
-                        <li condition="@SignInManager.IsSignedIn(User)" class="nav-item">
+                        @*<li condition="@SignInManager.IsSignedIn(User)" class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Plants" asp-action="SendPhoto">Recognize</a>
+                        </li>*@
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Plants" asp-action="SendPhoto">Recognize</a>
                         </li>
                         <li condition="@SignInManager.IsSignedIn(User)" class="nav-item">

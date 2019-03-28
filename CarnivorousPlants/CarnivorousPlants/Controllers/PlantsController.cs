@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 
 namespace CarnivorousPlants.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("[controller]/[action]")]
     public class PlantsController : Controller
     {
