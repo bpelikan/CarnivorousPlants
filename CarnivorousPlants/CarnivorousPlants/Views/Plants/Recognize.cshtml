@@ -7,9 +7,9 @@
 
 <h1>Recognize</h1>
 
-<img src="@Model.PhotoURL" alt="Photo" height="50%" width="50%">
+<img src="@Model.PhotoURL" alt="Photo" height="200" width="200" class="img-thumbnail">
 
-@Html.DisplayFor(model => model.ImagePrediction.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault().TagName) : @Html.DisplayFor(model => model.ImagePrediction.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault().Probability)
+@*@Html.DisplayFor(model => model.ImagePrediction.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault().TagName) : @Html.DisplayFor(model => model.ImagePrediction.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault().Probability)*@
 
 <br />
 <br />
@@ -23,11 +23,11 @@
     {
         if (c == @Model.ImagePrediction.Predictions.OrderByDescending(x => x.Probability).FirstOrDefault())
         {
-            @:<tr style = "background-color: lightgreen;">
+            @:<tr style = "background-color: lightgreen; font-weight: bold">
         }
         else
         {
-            @:<tr>
+            @:<tr style="color: grey">
         }
         
             <td>
