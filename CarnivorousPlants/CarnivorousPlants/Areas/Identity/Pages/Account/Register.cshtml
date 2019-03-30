@@ -4,9 +4,9 @@
     ViewData["Title"] = "Register";
 }
 
-@*<h1>@ViewData["Title"]</h1>*@
+<h1>@ViewData["Title"]</h1>
 
-@*<div class="row">
+<div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h4>Create a new account.</h4>
@@ -28,10 +28,11 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
+            <a condition="@ViewData["ReturnUrl"] == null" class="btn btn-outline-primary" asp-controller="Home" asp-action="Index">Back</a>
+
         </form>
     </div>
-</div>*@
-<a condition="@ViewData["ReturnUrl"] == null" class="btn btn-primary" asp-controller="Home" asp-action="Index">Back</a>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
