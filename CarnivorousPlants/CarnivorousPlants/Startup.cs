@@ -43,6 +43,7 @@ namespace CarnivorousPlants
             services.AddDefaultIdentity<ApplicationUser>(config => {
                     config.SignIn.RequireConfirmedEmail = true;
                 })
+                .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -52,7 +53,10 @@ namespace CarnivorousPlants
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, 
+                                IHostingEnvironment env, 
+                                UserManager<ApplicationUser> userManager,
+                                RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -71,6 +75,8 @@ namespace CarnivorousPlants
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            DbIdentityInitializer.SeedData(userManager, roleManager, Configuration);
 
             app.UseMvc(routes =>
             {
