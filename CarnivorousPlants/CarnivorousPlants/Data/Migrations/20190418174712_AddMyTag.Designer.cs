@@ -4,14 +4,16 @@ using CarnivorousPlants.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarnivorousPlants.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190418174712_AddMyTag")]
+    partial class AddMyTag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,8 +96,6 @@ namespace CarnivorousPlants.Data.Migrations
                     b.Property<Guid>("MyProjectId");
 
                     b.HasKey("MyTagId");
-
-                    b.HasIndex("MyProjectId");
 
                     b.ToTable("MyTags");
                 });
@@ -212,14 +212,6 @@ namespace CarnivorousPlants.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("CarnivorousPlants.Models.MyTag", b =>
-                {
-                    b.HasOne("CarnivorousPlants.Models.MyProject", "MyProject")
-                        .WithMany("MyTags")
-                        .HasForeignKey("MyProjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

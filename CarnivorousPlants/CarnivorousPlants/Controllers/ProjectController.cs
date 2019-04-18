@@ -19,7 +19,7 @@ namespace CarnivorousPlants.Controllers
     [Route("[controller]/[action]")]
     public class ProjectController : Controller
     {
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -28,7 +28,7 @@ namespace CarnivorousPlants.Controllers
 
         public ProjectController(IConfiguration configuration, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            _configuration = configuration;
+            //_configuration = configuration;
             _context = context;
             _userManager = userManager;
 

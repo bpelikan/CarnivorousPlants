@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarnivorousPlants.Data;
+using CarnivorousPlants.Models;
 using CarnivorousPlants.Models.TagViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
 using Microsoft.Extensions.Configuration;
@@ -14,14 +17,18 @@ namespace CarnivorousPlants.Controllers
     [Route("[controller]/[action]")]
     public class TagController : Controller
     {
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         private readonly string trainingKey;
         private readonly CustomVisionTrainingClient trainingApi;
 
-        public TagController(IConfiguration configuration)
+        public TagController(IConfiguration configuration, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            _configuration = configuration;
+            //_configuration = configuration;
+            _context = context;
+            _userManager = userManager;
 
             trainingKey = configuration["trainingKey"];
             trainingApi = new CustomVisionTrainingClient()
@@ -50,12 +57,21 @@ namespace CarnivorousPlants.Controllers
         [Route("{projectId?}")]
         public IActionResult Create(Guid projectId, CreateViewModel createViewModel)
         {
-            var project = trainingApi.CreateTag(
+            var projectTag = trainingApi.CreateTag(
                 createViewModel.ProjectId,
                 createViewModel.Name,
                 createViewModel.Description,
                 createViewModel.TagType
             );
+
+            MyTag myTag = new MyTag()
+            {
+                MyTagId = projectTag.Id,
+                MyProjectId = createViewModel.ProjectId,
+                CreatedBy = _userManager.GetUserId(HttpContext.User)
+            };
+            _context.MyTags.Add(myTag);
+            _context.SaveChanges();
 
             TempData["Success"] = $"The project tag <b>{createViewModel.Name}</b> has been successfully created.";
 
@@ -67,7 +83,14 @@ namespace CarnivorousPlants.Controllers
         {
             var tagName = trainingApi.GetTag(projectId, tagId).Name;
             trainingApi.DeleteTag(projectId, tagId);
-            
+
+            var tag = _context.MyTags.FirstOrDefault(x => x.MyTagId == tagId);
+            if (tag != null)
+            {
+                _context.Remove(tag);
+                _context.SaveChanges();
+            }
+
             TempData["Success"] = $"The tag <b>{tagName}</b> has been successfully deleted.";
 
             return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
