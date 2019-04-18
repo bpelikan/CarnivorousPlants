@@ -24,18 +24,11 @@ namespace CarnivorousPlants.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
 
-            //builder.Entity<JobPosition>()
-            //   .HasOne(x => x.Creator)
-            //   .WithMany(x => x.JobPositions)
-            //   .HasForeignKey(x => x.CreatorId);
-
             builder.Entity<MyProject>()
                 .HasMany(x => x.MyTags)
                 .WithOne(x => x.MyProject)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }
-
-
     }
 }

@@ -17,7 +17,6 @@ namespace CarnivorousPlants.Controllers
     [Route("[controller]/[action]")]
     public class TagController : Controller
     {
-        //private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -26,7 +25,6 @@ namespace CarnivorousPlants.Controllers
 
         public TagController(IConfiguration configuration, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            //_configuration = configuration;
             _context = context;
             _userManager = userManager;
 
