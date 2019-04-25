@@ -1,0 +1,15 @@
+﻿@model IEnumerable<CarnivorousPlants.Components.AdminMenuItem>
+
+<li class="dropdown">
+    <a asp-controller="Admin" asp-action="Index"
+       class="nav-link text-dark dropdown-toggle" data-toggle="dropdown">Admin Menu<b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        @foreach (var menuItem in Model)
+        {
+            <li>
+                <a class="nav-link text-dark" asp-controller="Admin" asp-action=@menuItem.ActionValue>@menuItem.DisplayValue</a>
+            </li>
+        }
+    </ul>
+</li>
+
