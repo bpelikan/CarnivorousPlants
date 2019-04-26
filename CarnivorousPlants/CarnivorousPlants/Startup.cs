@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CarnivorousPlants.Services;
 using CarnivorousPlants.Models;
+using AutoMapper;
 
 namespace CarnivorousPlants
 {
@@ -46,6 +47,8 @@ namespace CarnivorousPlants
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddAutoMapper();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
