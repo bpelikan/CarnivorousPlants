@@ -8,6 +8,7 @@ using CarnivorousPlants.Models;
 using CarnivorousPlants.Models.AdminViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CarnivorousPlants.Controllers
 {
@@ -16,16 +17,20 @@ namespace CarnivorousPlants.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
+        private readonly ILogger _logger;
         private readonly IMapper _mapper;
+
 
         public AdminController(UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             ApplicationDbContext context,
+            ILogger<AdminController> logger,
             IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
+            _logger = logger;
             _mapper = mapper;
         }
 
@@ -69,6 +74,41 @@ namespace CarnivorousPlants.Controllers
                 }
             }
             return View(vm);
+        }
+
+        public IActionResult AddUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddUser(AddUserViewModel addUserViewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(addUserViewModel);
+
+            var user = new ApplicationUser()
+            {
+                UserName = addUserViewModel.Email,
+                Email = addUserViewModel.Email,
+                EmailConfirmed = addUserViewModel.EmailConfirmed,
+                PhoneNumber = addUserViewModel.PhoneNumber,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            IdentityResult result = await _userManager.CreateAsync(user, addUserViewModel.Password);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User added successfully.");
+                return RedirectToAction(nameof(AdminController.UserManagement));
+            }
+
+            foreach (IdentityError error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+            return View(addUserViewModel);
         }
     }
 }
