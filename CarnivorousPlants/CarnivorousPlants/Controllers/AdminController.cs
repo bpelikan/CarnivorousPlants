@@ -6,12 +6,15 @@ using AutoMapper;
 using CarnivorousPlants.Data;
 using CarnivorousPlants.Models;
 using CarnivorousPlants.Models.AdminViewModels;
+using CarnivorousPlants.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace CarnivorousPlants.Controllers
 {
+    [Authorize(Roles = RoleCollection.Administrator)]
     public class AdminController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -19,7 +22,6 @@ namespace CarnivorousPlants.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
-
 
         public AdminController(UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
