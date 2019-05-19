@@ -112,5 +112,69 @@ namespace CarnivorousPlants.Controllers
             }
             return View(addUserViewModel);
         }
+
+        public async Task<IActionResult> EditUser(string id, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+                return RedirectToAction(nameof(AdminController.UserManagement));
+
+            var vm = _mapper.Map<ApplicationUser, EditUserViewModel>(user);
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel editUserViewModel, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (!ModelState.IsValid)
+                return View(editUserViewModel);
+            
+            var user = await _userManager.FindByIdAsync(editUserViewModel.Id);
+
+            if (user != null)
+            {
+                user.UserName = editUserViewModel.Email.Normalize().ToUpper();
+                user.Email = editUserViewModel.Email;
+                user.PhoneNumber = editUserViewModel.PhoneNumber;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User changed successfully.");
+                    //return RedirectToAction(nameof(AdminController.UserDetails), "Admin", new { id = user.Id });
+                    return RedirectToLocal(returnUrl);
+                }
+
+                ModelState.AddModelError("", "User not updated, something went wrong.");
+
+                return View(user);
+            }
+
+            return RedirectToAction(nameof(AdminController.UserManagement));
+        }
+
+
+
+
+        #region Helpers
+
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (returnUrl != null && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+        }
+
+        #endregion
     }
 }
