@@ -42,6 +42,7 @@ namespace CarnivorousPlants.Controllers
             //return View();
         }
 
+        #region UserManagement
         public IActionResult UserManagement()
         {
             var users = _userManager.Users.OrderBy(x => x.Email);
@@ -185,8 +186,9 @@ namespace CarnivorousPlants.Controllers
             }
             return View(nameof(AdminController.UserManagement), _userManager.Users);
         }
+        #endregion
 
-
+        #region Users in roles
         public async Task<IActionResult> AddUserToRole(string id, string roleName, string returnUrl = null)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -233,6 +235,7 @@ namespace CarnivorousPlants.Controllers
 
             return RedirectToLocal(returnUrl);
         }
+        #endregion
 
         #region Helpers
 
