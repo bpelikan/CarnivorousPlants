@@ -112,5 +112,92 @@ namespace CarnivorousPlants.Controllers
             }
             return View(addUserViewModel);
         }
+
+        public async Task<IActionResult> EditUser(string id, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+                return RedirectToAction(nameof(AdminController.UserManagement));
+
+            var vm = _mapper.Map<ApplicationUser, EditUserViewModel>(user);
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel editUserViewModel, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (!ModelState.IsValid)
+                return View(editUserViewModel);
+            
+            var user = await _userManager.FindByIdAsync(editUserViewModel.Id);
+
+            if (user != null)
+            {
+                user.UserName = editUserViewModel.Email.Normalize().ToUpper();
+                user.Email = editUserViewModel.Email;
+                user.PhoneNumber = editUserViewModel.PhoneNumber;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User changed successfully.");
+                    //return RedirectToAction(nameof(AdminController.UserDetails), "Admin", new { id = user.Id });
+                    return RedirectToLocal(returnUrl);
+                }
+
+                ModelState.AddModelError("", "User not updated, something went wrong.");
+
+                return View(user);
+            }
+
+            return RedirectToAction(nameof(AdminController.UserManagement));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                IdentityResult result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User deleted successfully.");
+                    return RedirectToAction(nameof(AdminController.UserManagement));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Something went wrong while deleting this user.");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "This user can't be found.");
+            }
+            return View(nameof(AdminController.UserManagement), _userManager.Users);
+        }
+
+
+        #region Helpers
+
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (returnUrl != null && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+        }
+
+        #endregion
     }
 }
