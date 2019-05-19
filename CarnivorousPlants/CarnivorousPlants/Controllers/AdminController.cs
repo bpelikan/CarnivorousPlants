@@ -187,6 +187,29 @@ namespace CarnivorousPlants.Controllers
         }
 
 
+        public async Task<IActionResult> AddUserToRole(string id, string roleName, string returnUrl = null)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var role = await _roleManager.FindByNameAsync(roleName);
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var result = await _userManager.AddToRoleAsync(user, role.Name);
+
+            if (!result.Succeeded)
+            {
+                foreach (IdentityError error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+
+            return RedirectToLocal(returnUrl);
+        }
+
         #region Helpers
 
         private IActionResult RedirectToLocal(string returnUrl)
