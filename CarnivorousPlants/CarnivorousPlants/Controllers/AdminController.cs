@@ -102,6 +102,7 @@ namespace CarnivorousPlants.Controllers
 
             if (result.Succeeded)
             {
+                TempData["Success"] = "User added successfully.";
                 _logger.LogInformation("User added successfully.");
                 return RedirectToAction(nameof(AdminController.UserManagement));
             }
@@ -145,6 +146,7 @@ namespace CarnivorousPlants.Controllers
 
                 if (result.Succeeded)
                 {
+                    TempData["Success"] = "User changed successfully.";
                     _logger.LogInformation("User changed successfully.");
                     //return RedirectToAction(nameof(AdminController.UserDetails), "Admin", new { id = user.Id });
                     return RedirectToLocal(returnUrl);
@@ -168,6 +170,7 @@ namespace CarnivorousPlants.Controllers
                 IdentityResult result = await _userManager.DeleteAsync(user);
                 if (result.Succeeded)
                 {
+                    TempData["Success"] = "User deleted successfully.";
                     _logger.LogInformation("User deleted successfully.");
                     return RedirectToAction(nameof(AdminController.UserManagement));
                 }
