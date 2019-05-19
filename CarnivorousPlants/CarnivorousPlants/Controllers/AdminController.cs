@@ -152,7 +152,7 @@ namespace CarnivorousPlants.Controllers
 
                 ModelState.AddModelError("", "User not updated, something went wrong.");
 
-                return View(user);
+                return View(editUserViewModel);
             }
 
             return RedirectToAction(nameof(AdminController.UserManagement));
