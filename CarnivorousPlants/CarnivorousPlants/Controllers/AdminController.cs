@@ -158,7 +158,30 @@ namespace CarnivorousPlants.Controllers
             return RedirectToAction(nameof(AdminController.UserManagement));
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
 
+            if (user != null)
+            {
+                IdentityResult result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User deleted successfully.");
+                    return RedirectToAction(nameof(AdminController.UserManagement));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Something went wrong while deleting this user.");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "This user can't be found.");
+            }
+            return View(nameof(AdminController.UserManagement), _userManager.Users);
+        }
 
 
         #region Helpers
