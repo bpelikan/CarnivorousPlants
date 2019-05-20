@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarnivorousPlants.Data;
 using CarnivorousPlants.Models.ImageViewModel;
 using CarnivorousPlants.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -18,14 +19,16 @@ namespace CarnivorousPlants.Controllers
     [Route("[controller]/[action]")]
     public class ImageController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly IImageStorageService _imageStorageService;
 
         private readonly string trainingKey;
         private readonly CustomVisionTrainingClient trainingApi;
 
-        public ImageController(IConfiguration configuration, IImageStorageService imageStorageService)
+        public ImageController(ApplicationDbContext context, IConfiguration configuration, IImageStorageService imageStorageService)
         {
+            _context = context;
             _configuration = configuration;
             _imageStorageService = imageStorageService;
 
@@ -137,6 +140,18 @@ namespace CarnivorousPlants.Controllers
             trainingApi.CreateImageTags(projectId, createBatch);
 
             return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
+        }
+
+        public IActionResult ProvideLearningImage()
+        {
+            var defaultproject = _context.DefaultProjectHistories.OrderBy(x => x.SettingTime).FirstOrDefault();
+            if (defaultproject == null)
+            {
+                TempData["Error"] = "Default project doesn't exist.";
+                return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
+            }
+
+            return RedirectToAction(nameof(ImageController.Create), "Image", new { projectId = defaultproject.MyProjectId });
         }
 
     }

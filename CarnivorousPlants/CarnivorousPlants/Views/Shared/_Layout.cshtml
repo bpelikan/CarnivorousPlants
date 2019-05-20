@@ -50,6 +50,9 @@
                         <li condition="@SignInManager.IsSignedIn(User)" class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">Projects</a>
                         </li>
+                        <li condition="@SignInManager.IsSignedIn(User) && @User.IsInRole(RoleCollection.Provider)" class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="image" asp-action="ProvideLearningImage">Provide learning image</a>
+                        </li>
                         <li condition="@SignInManager.IsSignedIn(User) && @User.IsInRole(RoleCollection.Administrator)">@await Component.InvokeAsync("AdminMenu")</li>
                     </ul>
                 </div>

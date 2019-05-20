@@ -177,7 +177,7 @@ namespace CarnivorousPlants.Controllers
                 TempData["Error"] += $"<br />Project with ID:<b>{projectId}</b> doesn't exists.";
                 return RedirectToAction(nameof(ProjectController.Index));
             }
-            if (_context.DefaultProjectHistories.OrderBy(x => x.SettingTime).FirstOrDefault().MyProjectId == projectId)
+            if (_context.DefaultProjectHistories.OrderBy(x => x.SettingTime).FirstOrDefault()?.MyProjectId == projectId)
             {
                 TempData["Warning"] = $"Project with ID:<b>{projectId}</b> has already set as default.";
                 return RedirectToAction(nameof(ProjectController.Details), new { projectId });
