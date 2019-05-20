@@ -162,7 +162,7 @@ namespace CarnivorousPlants.Controllers
         [Authorize(Roles = RoleCollection.Provider)]
         public IActionResult ProvideLearningImage()
         {
-            var defaultproject = _context.DefaultProjectHistories.OrderBy(x => x.SettingTime).FirstOrDefault();
+            var defaultproject = _context.DefaultProjectHistories.OrderByDescending(x => x.SettingTime).FirstOrDefault();
             if (defaultproject == null)
             {
                 TempData["Error"] = "Default project doesn't exist.";
@@ -235,6 +235,7 @@ namespace CarnivorousPlants.Controllers
             {
                 ImageWaitingToConfirmId = Guid.NewGuid(),
                 ImageId = imageId,
+                MyProjectId = projectId,
                 MyTagId = Guid.Parse(provideImageViewModel.TagId),
                 ProvidedBy = _userManager.GetUserId(HttpContext.User),
                 SendTime = DateTime.UtcNow
@@ -248,6 +249,102 @@ namespace CarnivorousPlants.Controllers
             return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
         }
         #endregion
+
+        [Authorize(Roles = RoleCollection.Supervisor)]
+        //[Authorize(Roles = RoleCollection.Provider)]
+        public IActionResult AcceptLearningImageFind()
+        {
+            var currentProj = _context.DefaultProjectHistories.OrderByDescending(x => x.SettingTime).FirstOrDefault();
+            if (currentProj == null)
+            {
+                TempData["Error"] = "Couldn't find default project.";
+                return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
+            }
+
+            var imageToAccept = _context.ImagesWaitingToConfirm
+                                            .Where(x => x.MyProjectId == currentProj.MyProjectId)
+                                            .OrderBy(x => x.SendTime)
+                                            .FirstOrDefault();
+            if (imageToAccept == null)
+            {
+                TempData["Error"] = "No photos to accept.";
+                return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
+            }
+
+            return RedirectToAction(nameof(ImageController.AcceptLearningImage), "Image", imageToAccept);
+        }
+
+        [Authorize(Roles = RoleCollection.Supervisor)]
+        //[Route("{ImageWaitingToConfirmId?}")]
+        public IActionResult AcceptLearningImage(ImageWaitingToConfirm imageWaitingToConfirm)
+        {
+            var myTag = _context.MyTags.FirstOrDefault(x => x.MyTagId == imageWaitingToConfirm.MyTagId);
+            if (myTag == null)
+            {
+                TempData["Error"] = $"Tag with ID:{imageWaitingToConfirm.MyTagId} not found.";
+                return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
+            }
+
+            AcceptLearningImageViewModel vm = new AcceptLearningImageViewModel()
+            {
+                ImageWaitingToConfirmId = imageWaitingToConfirm.ImageWaitingToConfirmId,
+                MyProjectId = myTag.MyProjectId,
+                MyTagId = myTag.MyTagId,
+                ImageId = imageWaitingToConfirm.ImageId,
+                ImageUrl = _imageStorageService.UriFor(imageWaitingToConfirm.ImageId),
+                ProvidedBy = imageWaitingToConfirm.ProvidedBy,
+                SendTime = imageWaitingToConfirm.SendTime,
+                TagsSelectList = new SelectList(trainingApi.GetTags(myTag.MyProjectId), "Id", "Name", trainingApi.GetTag(myTag.MyProjectId,myTag.MyTagId)),
+                //Tags = trainingApi.GetTags(projectId),
+            };
+            return View(vm);
+        }
+
+        [Authorize(Roles = RoleCollection.Supervisor)]
+        [HttpPost]
+        [Route("{projectId?}")]
+        public async Task<IActionResult> AcceptLearningImage(Guid projectId, AcceptLearningImageViewModel acceptLearningImageViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                if (acceptLearningImageViewModel.MyTagId == null)
+                    TempData["Warning"] = "You must choose a tag for the photo.";
+
+                return RedirectToAction(nameof(ImageController.AcceptLearningImageFind));
+            }
+
+            var imageUrl = _imageStorageService.UriFor(acceptLearningImageViewModel.ImageId);
+            ImageUrlCreateEntry imageUrlCreateEntry = new ImageUrlCreateEntry(imageUrl, new List<Guid>() { acceptLearningImageViewModel.MyTagId });
+            IList<ImageUrlCreateEntry> imageUrlCreateEntries = new List<ImageUrlCreateEntry>() { imageUrlCreateEntry };
+            ImageUrlCreateBatch url = new ImageUrlCreateBatch(imageUrlCreateEntries);
+
+            trainingApi.CreateImagesFromUrls(projectId, url);
+
+            DeleteImageWaitingToConfirm(acceptLearningImageViewModel.ImageWaitingToConfirmId);
+
+            TempData["Success"] = $"The image has been successfully accepted.";
+            return RedirectToAction(nameof(ImageController.AcceptLearningImageFind), "Image");
+
+        }
+
+        [Authorize(Roles = RoleCollection.Supervisor)]
+        [Route("{imageWaitingToConfirm?}")]
+        public async Task<IActionResult> RejectImageWaitingToConfirm(Guid imageWaitingToConfirm)
+        {
+            DeleteImageWaitingToConfirm(imageWaitingToConfirm);
+            TempData["Success"] = $"The image has been rejected.";
+            return RedirectToAction(nameof(ImageController.AcceptLearningImageFind), "Image");
+
+        }        
+        
+        private void DeleteImageWaitingToConfirm(Guid imageWaitingToConfirm)
+        {
+            var imagesWaitingToConfirmToDelete = _context.ImagesWaitingToConfirm
+                .FirstOrDefault(x => x.ImageWaitingToConfirmId == imageWaitingToConfirm);
+            _context.ImagesWaitingToConfirm.Remove(imagesWaitingToConfirmToDelete);
+            _context.SaveChanges();
+
+        }
 
     }
 }

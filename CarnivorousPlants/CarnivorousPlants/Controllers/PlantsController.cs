@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using CarnivorousPlants.Data;
 using CarnivorousPlants.Models.PlantsViewModels;
 using CarnivorousPlants.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +23,7 @@ namespace CarnivorousPlants.Controllers
     [Route("[controller]/[action]")]
     public class PlantsController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly IImageStorageService _imageStorageService;
         private readonly IConfiguration _configuration;
         private readonly string trainingKey;
@@ -30,8 +32,9 @@ namespace CarnivorousPlants.Controllers
         private readonly CustomVisionPredictionClient endpoint;
         //private string predictionEndpoint2;
 
-        public PlantsController(IImageStorageService imageStorageService, IConfiguration configuration)
+        public PlantsController(ApplicationDbContext context, IImageStorageService imageStorageService, IConfiguration configuration)
         {
+            _context = context;
             _imageStorageService = imageStorageService;
             _configuration = configuration;
 
@@ -89,6 +92,26 @@ namespace CarnivorousPlants.Controllers
                 PhotoURL = photoUrl,
                 ImagePrediction = await endpoint.PredictImageUrlAsync(projectID, imgUrl)
             };
+
+            //RecognizeViewModel recognizeViewModel;
+
+            //var proj = _context.DefaultProjectHistories.OrderByDescending(x => x.SettingTime).FirstOrDefault();
+            //if (proj != null)
+            //{
+            //    recognizeViewModel = new RecognizeViewModel()
+            //    {
+            //        PhotoURL = photoUrl,
+            //        ImagePrediction = await endpoint.PredictImageUrlAsync(proj.MyProjectId, imgUrl)
+            //    };
+            //}
+            //else
+            //{
+            //    recognizeViewModel = new RecognizeViewModel()
+            //    {
+            //        PhotoURL = photoUrl,
+            //        ImagePrediction = await endpoint.PredictImageUrlAsync(projectID, imgUrl)
+            //    };
+            //}
 
             return View(recognizeViewModel);
         }

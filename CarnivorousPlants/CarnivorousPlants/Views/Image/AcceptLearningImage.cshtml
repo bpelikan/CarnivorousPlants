@@ -1,0 +1,40 @@
+﻿@using CarnivorousPlants.Models.ImageViewModel
+@model AcceptLearningImageViewModel
+
+@{
+    ViewData["Title"] = "Accept Learning Image";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Accept Learning Image</h1>
+
+
+<form asp-controller="Image" asp-action="AcceptLearningImage" asp-route-projectId="@Model.MyProjectId" asp-route-imageId="@Model.ImageId" method="post" class="form-horizontal" role="form">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+
+    <input asp-for="ImageWaitingToConfirmId" class="form-control" readonly="readonly" hidden />
+    <input asp-for="ImageId" class="form-control" readonly="readonly" hidden />
+
+    <div>
+        <img src="@Model.ImageUrl" height="200" width="200" class="img-thumbnail" />
+        <div>
+            <b>@Html.DisplayNameFor(model => model.MyTagId)</b>
+            <select asp-for="MyTagId" class="form-control" asp-items="@Model.TagsSelectList">
+                <option selected value="">--- SELECT ---</option>
+                @*<option selected value="@Model">@Model.MyTagName</option>*@
+            </select>
+        </div>
+    </div>
+    <hr />
+
+
+    <div class="form-group">
+        <div>
+            <input type="submit" class="btn btn-success btn-block" value="Accept" />
+            @*<input type="submit" class="btn btn-success btn-block" value="RejectBool" asp-route-accept="@false" />*@
+            <a class="btn btn-danger btn-block" asp-controller="Image" asp-action="RejectImageWaitingToConfirm" asp-route-imageWaitingToConfirm="@Model.ImageWaitingToConfirmId">Reject</a>
+        </div>
+    </div>
+</form>
+
