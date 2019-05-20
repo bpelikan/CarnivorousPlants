@@ -254,7 +254,17 @@ namespace CarnivorousPlants.Controllers
         //[Authorize(Roles = RoleCollection.Provider)]
         public IActionResult AcceptLearningImageFind()
         {
-            var imageToAccept = _context.ImagesWaitingToConfirm.OrderBy(x => x.SendTime).FirstOrDefault();
+            var currentProj = _context.DefaultProjectHistories.OrderByDescending(x => x.SettingTime).FirstOrDefault();
+            if (currentProj == null)
+            {
+                TempData["Error"] = "Couldn't find default project.";
+                return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
+            }
+
+            var imageToAccept = _context.ImagesWaitingToConfirm
+                                            .Where(x => x.MyProjectId == currentProj.MyProjectId)
+                                            .OrderBy(x => x.SendTime)
+                                            .FirstOrDefault();
             if (imageToAccept == null)
             {
                 TempData["Error"] = "No photos to accept.";
