@@ -235,6 +235,7 @@ namespace CarnivorousPlants.Controllers
             {
                 ImageWaitingToConfirmId = Guid.NewGuid(),
                 ImageId = imageId,
+                MyProjectId = projectId,
                 MyTagId = Guid.Parse(provideImageViewModel.TagId),
                 ProvidedBy = _userManager.GetUserId(HttpContext.User),
                 SendTime = DateTime.UtcNow

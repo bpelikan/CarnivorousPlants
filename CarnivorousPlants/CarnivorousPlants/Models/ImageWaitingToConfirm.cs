@@ -9,7 +9,7 @@ namespace CarnivorousPlants.Models
     {
         public Guid ImageWaitingToConfirmId { get; set; }
 
-        //public Guid MyProjectId { get; set; }
+        public Guid MyProjectId { get; set; }
         public Guid MyTagId { get; set; }
 
         public string ImageId { get; set; }
