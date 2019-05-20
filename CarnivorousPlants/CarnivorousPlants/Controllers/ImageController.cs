@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CarnivorousPlants.Data;
+using CarnivorousPlants.Models;
 using CarnivorousPlants.Models.ImageViewModel;
 using CarnivorousPlants.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
@@ -20,15 +22,21 @@ namespace CarnivorousPlants.Controllers
     public class ImageController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly IImageStorageService _imageStorageService;
 
         private readonly string trainingKey;
         private readonly CustomVisionTrainingClient trainingApi;
 
-        public ImageController(ApplicationDbContext context, IConfiguration configuration, IImageStorageService imageStorageService)
+        public ImageController(
+            ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager, 
+            IConfiguration configuration, 
+            IImageStorageService imageStorageService)
         {
             _context = context;
+            _userManager = userManager;
             _configuration = configuration;
             _imageStorageService = imageStorageService;
 
@@ -151,7 +159,75 @@ namespace CarnivorousPlants.Controllers
                 return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
             }
 
-            return RedirectToAction(nameof(ImageController.Create), "Image", new { projectId = defaultproject.MyProjectId });
+            return RedirectToAction(nameof(ImageController.ProvideImage), "Image", new { projectId = defaultproject.MyProjectId });
+        }
+
+        [Route("{projectId?}")]
+        public IActionResult ProvideImage(Guid projectId)
+        {
+            ProvideImageViewModel vm = new ProvideImageViewModel()
+            {
+                ProjectId = projectId,
+                TagsSelectList = new SelectList(trainingApi.GetTags(projectId), "Id", "Name"),
+                //Tags = trainingApi.GetTags(projectId),
+            };
+            return View(vm);
+        }
+
+        [HttpPost]
+        [Route("{projectId?}")]
+        public async Task<IActionResult> ProvideImage(Guid projectId, IFormFile image, ProvideImageViewModel provideImageViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                if (provideImageViewModel.TagId == null)
+                    TempData["Warning"] = "You must choose a tag for the photo.";
+
+                return RedirectToAction(nameof(ImageController.Create), new { projectId });
+            }
+
+            string imageId = null;
+            try
+            {
+                if (image == null)
+                    throw new Exception("Choose an image to send.");
+                using (var stream = image.OpenReadStream())
+                {
+                    imageId = await _imageStorageService.SaveImageAsync(stream, image.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+                return RedirectToAction(nameof(ImageController.Create), new { projectId });
+            }
+
+            ImageWaitingToConfirm imageWaitingToConfirm = new ImageWaitingToConfirm()
+            {
+                ImageWaitingToConfirmId = Guid.NewGuid(),
+                ImageId = imageId,
+                MyTagId = Guid.Parse(provideImageViewModel.TagId),
+                ProvidedBy = _userManager.GetUserId(HttpContext.User),
+                SendTime = DateTime.UtcNow
+            };
+
+            _context.ImagesWaitingToConfirm.Add(imageWaitingToConfirm);
+            _context.SaveChanges();
+
+            TempData["Success"] = "Image send succesfully.";
+
+            return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
+
+            //var imageUrl = _imageStorageService.UriFor(imageId);
+            //ImageUrlCreateEntry imageUrlCreateEntry = new ImageUrlCreateEntry(imageUrl, new List<Guid>() { Guid.Parse(createViewModel.TagId) });
+            //IList<ImageUrlCreateEntry> imageUrlCreateEntries = new List<ImageUrlCreateEntry>() { imageUrlCreateEntry };
+            //ImageUrlCreateBatch url = new ImageUrlCreateBatch(imageUrlCreateEntries);
+
+            //trainingApi.CreateImagesFromUrls(projectId, url);
+
+            //TempData["Success"] = $"The image has been successfully uploaded.";
+
+            //return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
         }
 
     }

@@ -9,7 +9,7 @@ namespace CarnivorousPlants.Models
     {
         public Guid DefaultProjectHistoryId { get; set; }
         public Guid MyProjectId { get; set; }
-        public virtual MyProject MyProject { get; set; }
+        //public virtual MyProject MyProject { get; set; }
         public string SettedBy { get; set; }
         public DateTime SettingTime { get; set; }
 
