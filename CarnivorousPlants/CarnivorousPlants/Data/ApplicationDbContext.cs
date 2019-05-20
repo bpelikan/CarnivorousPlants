@@ -17,6 +17,7 @@ namespace CarnivorousPlants.Data
         public DbSet<MyProject> MyProjects { get; set; }
         public DbSet<MyTag> MyTags { get; set; }
         public DbSet<DefaultProjectHistory> DefaultProjectHistories { get; set; }
+        public DbSet<ImageWaitingToConfirm> ImagesWaitingToConfirm { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
