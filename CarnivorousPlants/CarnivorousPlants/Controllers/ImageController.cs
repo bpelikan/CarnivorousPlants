@@ -165,9 +165,26 @@ namespace CarnivorousPlants.Controllers
         [Route("{projectId?}")]
         public IActionResult ProvideImage(Guid projectId)
         {
+            Project project = null;
+            try
+            {
+                project = trainingApi.GetProject(projectId);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Something went wrong.";
+            }
+
+            if (project == null)
+            {
+                TempData["Error"] += $"<br />Project with ID:<b>{projectId}</b> doesn't exists.";
+                return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
+            }
+
             ProvideImageViewModel vm = new ProvideImageViewModel()
             {
                 ProjectId = projectId,
+                ProjectName = project.Name,
                 TagsSelectList = new SelectList(trainingApi.GetTags(projectId), "Id", "Name"),
                 //Tags = trainingApi.GetTags(projectId),
             };

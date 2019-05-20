@@ -1,13 +1,12 @@
 ﻿@using CarnivorousPlants.Models.ImageViewModel
 @model ProvideImageViewModel
 
-
 @{
     ViewData["Title"] = "ProvideImage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Provide Image</h1>
+<h2>Provide Image to <b>@Model.ProjectName</b></h2>
 
 <form asp-controller="Image" asp-action="ProvideImage" asp-route-projectId="@Model.ProjectId" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="All" class="text-danger"></div>

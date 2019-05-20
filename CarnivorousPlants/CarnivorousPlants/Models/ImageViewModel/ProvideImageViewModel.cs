@@ -10,6 +10,7 @@ namespace CarnivorousPlants.Models.ImageViewModel
     public class ProvideImageViewModel
     {
         public Guid ProjectId { get; set; }
+        public string ProjectName { get; set; }
 
         [Required]
         public string TagId { get; set; }
