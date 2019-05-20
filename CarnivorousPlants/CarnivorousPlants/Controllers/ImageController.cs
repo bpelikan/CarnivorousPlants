@@ -6,6 +6,7 @@ using CarnivorousPlants.Data;
 using CarnivorousPlants.Models;
 using CarnivorousPlants.Models.ImageViewModel;
 using CarnivorousPlants.Services;
+using CarnivorousPlants.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -54,6 +55,8 @@ namespace CarnivorousPlants.Controllers
         //    return View();
         //}
 
+        #region Moderator
+        [Authorize(Roles = RoleCollection.Moderator)]
         [Route("{projectId?}")]
         public IActionResult Create(Guid projectId)
         {
@@ -65,6 +68,7 @@ namespace CarnivorousPlants.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = RoleCollection.Moderator)]
         [HttpPost]
         [Route("{projectId?}")]
         public async Task<IActionResult> Create(Guid projectId, IFormFile image, CreateViewModel createViewModel)
@@ -105,6 +109,7 @@ namespace CarnivorousPlants.Controllers
             return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
         }
 
+        [Authorize(Roles = RoleCollection.Moderator)]
         [Route("{projectId?}/{imageId?}")]
         public IActionResult Delete(Guid projectId, Guid imageId)
         {
@@ -112,6 +117,7 @@ namespace CarnivorousPlants.Controllers
             return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
         }
 
+        [Authorize(Roles = RoleCollection.Moderator)]
         [Route("{projectId?}/{imageId?}")]
         public IActionResult ChangeImageTag(Guid projectId, Guid imageId)
         {
@@ -124,6 +130,7 @@ namespace CarnivorousPlants.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = RoleCollection.Moderator)]
         [HttpPost]
         [Route("{projectId?}/{imageId?}")]
         public async Task<IActionResult> ChangeImageTag(Guid projectId, Guid imageId, ChangeImageTagViewModel changeImageTagViewModel)
@@ -149,7 +156,10 @@ namespace CarnivorousPlants.Controllers
 
             return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
         }
+        #endregion
 
+        #region Provider
+        [Authorize(Roles = RoleCollection.Provider)]
         public IActionResult ProvideLearningImage()
         {
             var defaultproject = _context.DefaultProjectHistories.OrderBy(x => x.SettingTime).FirstOrDefault();
@@ -162,6 +172,7 @@ namespace CarnivorousPlants.Controllers
             return RedirectToAction(nameof(ImageController.ProvideImage), "Image", new { projectId = defaultproject.MyProjectId });
         }
 
+        [Authorize(Roles = RoleCollection.Provider)]
         [Route("{projectId?}")]
         public IActionResult ProvideImage(Guid projectId)
         {
@@ -191,6 +202,7 @@ namespace CarnivorousPlants.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = RoleCollection.Provider)]
         [HttpPost]
         [Route("{projectId?}")]
         public async Task<IActionResult> ProvideImage(Guid projectId, IFormFile image, ProvideImageViewModel provideImageViewModel)
@@ -234,18 +246,8 @@ namespace CarnivorousPlants.Controllers
             TempData["Success"] = "Image send succesfully.";
 
             return RedirectToAction(nameof(PlantsController.SendPhoto), "Plants");
-
-            //var imageUrl = _imageStorageService.UriFor(imageId);
-            //ImageUrlCreateEntry imageUrlCreateEntry = new ImageUrlCreateEntry(imageUrl, new List<Guid>() { Guid.Parse(createViewModel.TagId) });
-            //IList<ImageUrlCreateEntry> imageUrlCreateEntries = new List<ImageUrlCreateEntry>() { imageUrlCreateEntry };
-            //ImageUrlCreateBatch url = new ImageUrlCreateBatch(imageUrlCreateEntries);
-
-            //trainingApi.CreateImagesFromUrls(projectId, url);
-
-            //TempData["Success"] = $"The image has been successfully uploaded.";
-
-            //return RedirectToAction(nameof(ProjectController.Details), "Project", new { projectId });
         }
+        #endregion
 
     }
 }
