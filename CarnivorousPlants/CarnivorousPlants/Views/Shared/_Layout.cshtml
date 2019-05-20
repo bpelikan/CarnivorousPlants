@@ -36,8 +36,8 @@
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>*@
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>*@
                         @*<li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </li>*@
@@ -49,6 +49,9 @@
                         </li>
                         <li condition="@SignInManager.IsSignedIn(User) && @User.IsInRole(RoleCollection.Provider)" class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="image" asp-action="ProvideLearningImage">Provide learning image</a>
+                        </li>
+                        <li condition="@SignInManager.IsSignedIn(User) && @User.IsInRole(RoleCollection.Supervisor)" class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="image" asp-action="AcceptLearningImageFind">Accept learning image</a>
                         </li>
                         <li condition="@SignInManager.IsSignedIn(User) && @User.IsInRole(RoleCollection.Moderator)" class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">Projects</a>
