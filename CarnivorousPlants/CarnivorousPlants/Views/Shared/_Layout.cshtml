@@ -35,9 +35,9 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
+                        </li>*@
                         @*<li class="nav-item">
             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </li>*@
@@ -47,7 +47,10 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Plants" asp-action="SendPhoto">Recognize</a>
                         </li>
-                        <li condition="@SignInManager.IsSignedIn(User)" class="nav-item">
+                        <li condition="@SignInManager.IsSignedIn(User) && @User.IsInRole(RoleCollection.Provider)" class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="image" asp-action="ProvideLearningImage">Provide learning image</a>
+                        </li>
+                        <li condition="@SignInManager.IsSignedIn(User) && @User.IsInRole(RoleCollection.Moderator)" class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Index">Projects</a>
                         </li>
                         <li condition="@SignInManager.IsSignedIn(User) && @User.IsInRole(RoleCollection.Administrator)">@await Component.InvokeAsync("AdminMenu")</li>

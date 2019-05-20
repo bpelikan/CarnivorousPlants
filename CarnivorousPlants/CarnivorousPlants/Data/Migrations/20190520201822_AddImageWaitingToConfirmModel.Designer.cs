@@ -4,14 +4,16 @@ using CarnivorousPlants.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarnivorousPlants.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190520201822_AddImageWaitingToConfirmModel")]
+    partial class AddImageWaitingToConfirmModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,8 +100,6 @@ namespace CarnivorousPlants.Data.Migrations
                     b.Property<Guid>("MyTagId");
 
                     b.Property<string>("ProvidedBy");
-
-                    b.Property<DateTime>("SendTime");
 
                     b.HasKey("ImageWaitingToConfirmId");
 

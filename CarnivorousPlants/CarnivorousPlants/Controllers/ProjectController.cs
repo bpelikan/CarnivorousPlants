@@ -159,6 +159,46 @@ namespace CarnivorousPlants.Controllers
             return RedirectToAction(nameof(ProjectController.Details), new { projectId });
         }
 
+        [Route("{projectId}")]
+        public IActionResult SetDefaultProject(Guid projectId)
+        {
+            Project project = null;
+            try
+            {
+                project = trainingApi.GetProject(projectId);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Something went wrong.";
+            }
+
+            if (project == null)
+            {
+                TempData["Error"] += $"<br />Project with ID:<b>{projectId}</b> doesn't exists.";
+                return RedirectToAction(nameof(ProjectController.Index));
+            }
+            if (_context.DefaultProjectHistories.OrderBy(x => x.SettingTime).FirstOrDefault()?.MyProjectId == projectId)
+            {
+                TempData["Warning"] = $"Project with ID:<b>{projectId}</b> has already set as default.";
+                return RedirectToAction(nameof(ProjectController.Details), new { projectId });
+            }
+
+            DefaultProjectHistory defaultProjectHistory = new DefaultProjectHistory()
+            {
+                DefaultProjectHistoryId = Guid.NewGuid(),
+                MyProjectId = projectId,
+                SettedBy = _userManager.GetUserId(HttpContext.User),
+                SettingTime = DateTime.UtcNow
+            };
+
+            _context.DefaultProjectHistories.Add(defaultProjectHistory);
+            _context.SaveChanges();
+
+            TempData["Success"] = $"Project was successfully set as default.";
+
+            return RedirectToAction(nameof(ProjectController.Details), new { projectId });
+        }
+
         //public IActionResult Create(string name)
         //{
         //    var project = trainingApi.CreateProject(name);

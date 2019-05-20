@@ -4,14 +4,16 @@ using CarnivorousPlants.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarnivorousPlants.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190520192244_AddDefaultProjectHistoryModel")]
+    partial class AddDefaultProjectHistoryModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,25 +87,9 @@ namespace CarnivorousPlants.Data.Migrations
 
                     b.HasKey("DefaultProjectHistoryId");
 
+                    b.HasIndex("MyProjectId");
+
                     b.ToTable("DefaultProjectHistories");
-                });
-
-            modelBuilder.Entity("CarnivorousPlants.Models.ImageWaitingToConfirm", b =>
-                {
-                    b.Property<Guid>("ImageWaitingToConfirmId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ImageId");
-
-                    b.Property<Guid>("MyTagId");
-
-                    b.Property<string>("ProvidedBy");
-
-                    b.Property<DateTime>("SendTime");
-
-                    b.HasKey("ImageWaitingToConfirmId");
-
-                    b.ToTable("ImagesWaitingToConfirm");
                 });
 
             modelBuilder.Entity("CarnivorousPlants.Models.MyProject", b =>
@@ -246,6 +232,14 @@ namespace CarnivorousPlants.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("CarnivorousPlants.Models.DefaultProjectHistory", b =>
+                {
+                    b.HasOne("CarnivorousPlants.Models.MyProject", "MyProject")
+                        .WithMany()
+                        .HasForeignKey("MyProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CarnivorousPlants.Models.MyTag", b =>
