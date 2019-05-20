@@ -14,5 +14,6 @@ namespace CarnivorousPlants.Models
 
         public string ImageId { get; set; }
         public string ProvidedBy { get; set; }
+        public DateTime SendTime { get; set; }
     }
 }
