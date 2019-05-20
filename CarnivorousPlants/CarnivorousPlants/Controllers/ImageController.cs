@@ -162,7 +162,7 @@ namespace CarnivorousPlants.Controllers
         [Authorize(Roles = RoleCollection.Provider)]
         public IActionResult ProvideLearningImage()
         {
-            var defaultproject = _context.DefaultProjectHistories.OrderBy(x => x.SettingTime).FirstOrDefault();
+            var defaultproject = _context.DefaultProjectHistories.OrderByDescending(x => x.SettingTime).FirstOrDefault();
             if (defaultproject == null)
             {
                 TempData["Error"] = "Default project doesn't exist.";
