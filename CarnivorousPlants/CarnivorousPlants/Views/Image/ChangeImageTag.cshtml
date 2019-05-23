@@ -22,7 +22,7 @@
 
 
     <div>
-        <img src="@Model.Image.ThumbnailUri" />
+        <img src="@Model.Image.ThumbnailUri" height="200" width="200" class="img-thumbnail"/>
         <div>
             <b>@Html.DisplayNameFor(model => model.TagId)</b>
             <select asp-for="TagId" class="form-control" asp-items="@Model.TagsSelectList">
@@ -37,6 +37,7 @@
         <div>
             <input type="submit" class="btn btn-primary btn-block" value="Change" />
             <a class="btn btn-sm btn-block btn-outline-primary" asp-controller="Project" asp-action="Details" asp-route-projectId="@Model.ProjectId">Back</a>
+            <a class="btn btn-outline-primary btn-block" asp-controller="Home" asp-action="Index">Back</a>
         </div>
     </div>
 </form>
