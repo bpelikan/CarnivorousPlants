@@ -87,11 +87,36 @@ namespace CarnivorousPlants.Controllers
             var photoUrl = _imageStorageService.UriFor(photoId);
             ImageUrl imgUrl = new ImageUrl { Url = photoUrl };
 
+
             RecognizeViewModel recognizeViewModel = new RecognizeViewModel()
             {
                 PhotoURL = photoUrl,
                 ImagePrediction = await endpoint.PredictImageUrlAsync(projectID, imgUrl)
             };
+
+            ////
+            //recognize from current default project
+            //var defaultProject = _context.DefaultProjectHistories.OrderByDescending(x => x.SettingTime).FirstOrDefault();
+            //Guid projectPredictionID;
+            //if (defaultProject != null)
+            //    projectPredictionID = defaultProject.MyProjectId;
+            //else
+            //    projectPredictionID = projectID;
+
+
+            //RecognizeViewModel recognizeViewModel = new RecognizeViewModel()
+            //{
+            //    PhotoURL = photoUrl,
+            //    ImagePrediction = await endpoint.PredictImageUrlAsync(projectPredictionID, imgUrl)
+            //};
+            ////
+
+            //RecognizeViewModel recognizeViewModel = new RecognizeViewModel()
+            //{
+            //    PhotoURL = photoUrl,
+            //    ImagePrediction = await endpoint.PredictImageUrlAsync(projectID, imgUrl)
+            //};
+
 
             //RecognizeViewModel recognizeViewModel;
 
