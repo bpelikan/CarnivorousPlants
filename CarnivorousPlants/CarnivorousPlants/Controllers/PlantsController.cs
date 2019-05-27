@@ -86,7 +86,7 @@ namespace CarnivorousPlants.Controllers
         {
             var photoUrl = _imageStorageService.UriFor(photoId);
             ImageUrl imgUrl = new ImageUrl { Url = photoUrl };
-
+            failtest
             RecognizeViewModel recognizeViewModel = new RecognizeViewModel()
             {
                 PhotoURL = photoUrl,
