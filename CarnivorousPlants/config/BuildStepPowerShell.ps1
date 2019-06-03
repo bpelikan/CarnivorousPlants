@@ -1,6 +1,16 @@
 [CmdletBinding()]
 param (
-    $ApiManagementServiceName
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
+    [String]
+    $ResourceGroupName,
+    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
+    [String]
+    $ServicePlanName,
+    [Parameter(Mandatory=$true)][ValidateSet("Free","Shared")] 
+    [String] 
+    $Tier
 )
 
-$ApiManagementServiceName
+$ResourceGroupName
+$ServicePlanName
+$Tier
