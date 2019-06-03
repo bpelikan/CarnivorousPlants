@@ -3,9 +3,6 @@ param (
     [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
     [String]
     $ResourceGroupName,
-    [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
-    [String]
-    $ServicePlanName,
 	[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
     [String]
     $WebAppServiceName,
