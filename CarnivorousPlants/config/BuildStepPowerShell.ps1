@@ -3,7 +3,7 @@ $AzureTenantId = $Env:AzureTenantId
 $AzurePass = $Env:AzurePass
 $AzureSubscr = $Env:AzureSubscr
 
-Import-Module AzureRM
+Install-Module AzureRM -AllowClobber
 
 try {
     $azurePassword = ConvertTo-SecureString $AzurePass -AsPlainText -Force
