@@ -1,16 +1,16 @@
 [CmdletBinding()]
 param (
-	$azureAplicationId,
-	$azureTenantId,
-	$azurePass,
+	$AzureAplicationId,
+	$AzureTenantId,
+	$AzurePass,
     $ApiManagementServiceName,
     $ApiManagementServiceResourceGroup
 )
 
 try {
-    $azurePassword = ConvertTo-SecureString $azurePasswordString -AsPlainText -Force
-    $psCred = New-Object System.Management.Automation.PSCredential($azureAplicationId , $azurePassword)
-    Add-AzureRmAccount -Credential $psCred -TenantId $azureTenantId  -ServicePrincipal
+    $azurePassword = ConvertTo-SecureString $AzurePass -AsPlainText -Force
+    $psCred = New-Object System.Management.Automation.PSCredential($AzureAplicationId , $azurePassword)
+    Add-AzureRmAccount -Credential $psCred -TenantId $AzureTenantId  -ServicePrincipal
 }
 catch {
     Write-Error -Message $_.Exception
