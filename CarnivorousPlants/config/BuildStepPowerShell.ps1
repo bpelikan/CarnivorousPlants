@@ -1,3 +1,26 @@
+$AzureAplicationId = $Env:AzureAplicationId
+$AzureTenantId = $Env:AzureTenantId
+$AzurePass = $Env:AzurePass
+$AzureSubscr = $Env:AzureSubscr
+try {
+    $azurePassword = ConvertTo-SecureString $AzurePass -AsPlainText -Force
+    $psCred = New-Object System.Management.Automation.PSCredential($AzureAplicationId , $azurePassword)
+    Add-AzureRmAccount -Credential $psCred -TenantId $AzureTenantId  -ServicePrincipal
+}
+catch {
+    Write-Error -Message $_.Exception
+    throw $_.Exception
+}
+
+$apimServiceName = $Env:ApiManagementServiceName
+$resourceGroupName = $Env:ApiManagementServiceResourceGroup
+
+# Get-AzureRmResourceGroup | ft
+
+Write-Host "Api Management Service Name: $($apimServiceName)"
+Write-Host "Api Management Resource Group Name: $($resourceGroupName)"
+
+
 # [CmdletBinding()]
 # param (
 # 	# $AzureAplicationId,
@@ -35,11 +58,3 @@
 
 # $apimServiceName = $ApiManagementServiceName
 # $resourceGroupName = $ApiManagementServiceResourceGroup
-
-$apimServiceName = $Env:ApiManagementServiceName
-$resourceGroupName = $Env:ApiManagementServiceResourceGroup
-
-# Get-AzureRmResourceGroup | ft
-
-Write-Host "Api Management Service Name: $($apimServiceName)"
-Write-Host "Api Management Resource Group Name: $($resourceGroupName)"
