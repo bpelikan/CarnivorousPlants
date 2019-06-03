@@ -1,11 +1,11 @@
-[CmdletBinding()]
-param (
-	# $AzureAplicationId,
-	# $AzureTenantId,
-	# $AzurePass,
-    $ApiManagementServiceName,
-    $ApiManagementServiceResourceGroup
-)
+# [CmdletBinding()]
+# param (
+# 	# $AzureAplicationId,
+# 	# $AzureTenantId,
+# 	# $AzurePass,
+#     $ApiManagementServiceName,
+#     $ApiManagementServiceResourceGroup
+# )
 
 # try {
 #     $azurePassword = ConvertTo-SecureString $AzurePass -AsPlainText -Force
@@ -33,8 +33,11 @@ param (
 # }
 
 
-$apimServiceName = $ApiManagementServiceName
-$resourceGroupName = $ApiManagementServiceResourceGroup
+# $apimServiceName = $ApiManagementServiceName
+# $resourceGroupName = $ApiManagementServiceResourceGroup
+
+$apimServiceName = $Env:ApiManagementServiceName
+$resourceGroupName = $Env:ApiManagementServiceResourceGroup
 
 # Get-AzureRmResourceGroup | ft
 
