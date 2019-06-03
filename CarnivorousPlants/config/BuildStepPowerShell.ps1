@@ -1,29 +1,29 @@
-$AzureAplicationId = $Env:AzureAplicationId
-$AzureTenantId = $Env:AzureTenantId
-$AzurePass = $Env:AzurePass
-$AzureSubscr = $Env:AzureSubscr
+Get-AzureRmResourceGroup | ft
 
-Install-Module AzureRM -AllowClobber -Force
+# $AzureAplicationId = $Env:AzureAplicationId
+# $AzureTenantId = $Env:AzureTenantId
+# $AzurePass = $Env:AzurePass
+# $AzureSubscr = $Env:AzureSubscr
 
-try {
-    $azurePassword = ConvertTo-SecureString $AzurePass -AsPlainText -Force
-    $psCred = New-Object System.Management.Automation.PSCredential($AzureAplicationId , $azurePassword)
-    Add-AzureRmAccount -Credential $psCred -TenantId $AzureTenantId  -ServicePrincipal
-}
-catch {
-    Write-Error -Message $_.Exception
-    throw $_.Exception
-}
+# try {
+#     $azurePassword = ConvertTo-SecureString $AzurePass -AsPlainText -Force
+#     $psCred = New-Object System.Management.Automation.PSCredential($AzureAplicationId , $azurePassword)
+#     Add-AzureRmAccount -Credential $psCred -TenantId $AzureTenantId  -ServicePrincipal
+# }
+# catch {
+#     Write-Error -Message $_.Exception
+#     throw $_.Exception
+# }
 
-Select-AzureRMSubscription $AzureSubscr
+# Select-AzureRMSubscription $AzureSubscr
 
-$apimServiceName = $Env:ApiManagementServiceName
-$resourceGroupName = $Env:ApiManagementServiceResourceGroup
+# $apimServiceName = $Env:ApiManagementServiceName
+# $resourceGroupName = $Env:ApiManagementServiceResourceGroup
 
-# Get-AzureRmResourceGroup | ft
+# # Get-AzureRmResourceGroup | ft
 
-Write-Host "Api Management Service Name: $($apimServiceName)"
-Write-Host "Api Management Resource Group Name: $($resourceGroupName)"
+# Write-Host "Api Management Service Name: $($apimServiceName)"
+# Write-Host "Api Management Resource Group Name: $($resourceGroupName)"
 
 
 # [CmdletBinding()]
