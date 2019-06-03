@@ -3,6 +3,8 @@ $AzureTenantId = $Env:AzureTenantId
 $AzurePass = $Env:AzurePass
 $AzureSubscr = $Env:AzureSubscr
 
+Import-Module AzureRM
+
 try {
     $azurePassword = ConvertTo-SecureString $AzurePass -AsPlainText -Force
     $psCred = New-Object System.Management.Automation.PSCredential($AzureAplicationId , $azurePassword)
