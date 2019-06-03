@@ -11,5 +11,5 @@ param (
     $Tier
 )
 
-"Scale up:" + $ResourceGroupName + $ServicePlanName + "to:" + $Tier + "Plan"
+"Scale up: " + $ResourceGroupName + $ServicePlanName + "to: " + $Tier + " Plan"
 Set-AzureRmAppServicePlan -ResourceGroupName $ResourceGroupName -Name $ServicePlanName -Tier $Tier
