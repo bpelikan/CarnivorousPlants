@@ -1,1 +1,1 @@
-Get-AzureRmWebApp | % { $_.Name }
+Set-AzureRmAppServicePlan -ResourceGroupName $Env:ResourceGroupName -Name $Env:Name -Tier $Env:Tier
