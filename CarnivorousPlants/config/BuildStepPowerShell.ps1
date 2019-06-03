@@ -2,6 +2,7 @@ $AzureAplicationId = $Env:AzureAplicationId
 $AzureTenantId = $Env:AzureTenantId
 $AzurePass = $Env:AzurePass
 $AzureSubscr = $Env:AzureSubscr
+
 try {
     $azurePassword = ConvertTo-SecureString $AzurePass -AsPlainText -Force
     $psCred = New-Object System.Management.Automation.PSCredential($AzureAplicationId , $azurePassword)
@@ -11,6 +12,8 @@ catch {
     Write-Error -Message $_.Exception
     throw $_.Exception
 }
+
+Select-AzureRMSubscription $AzureSubscr
 
 $apimServiceName = $Env:ApiManagementServiceName
 $resourceGroupName = $Env:ApiManagementServiceResourceGroup
