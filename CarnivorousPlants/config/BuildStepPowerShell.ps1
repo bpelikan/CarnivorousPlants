@@ -6,7 +6,7 @@ param (
     [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
     [String]
     $ServicePlanName,
-    [Parameter(Mandatory=$true)][ValidateSet("Free","Shared")] 
+    [Parameter(Mandatory=$true)][ValidateSet("Free","Shared", "Basic", "Standard")] 
     [String] 
     $Tier
 )
