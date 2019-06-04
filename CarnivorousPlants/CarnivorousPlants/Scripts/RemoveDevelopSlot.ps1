@@ -7,12 +7,12 @@ param (
     [String]
     $WebAppServiceName,
     [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
-    [String] 
+    [String]
     $SlotName
 )
 
 "Create Slot:"
 "Resource group name: " + $ResourceGroupName
 "Webb App Service Plan name: " + $WebAppServiceName
-"Slot name: "  + $SlotName
-Remove-AzureRmWebAppSlot -ResourceGroupName $ResourceGroupName -Name $WebAppServiceName -Slot $SlotName
+"Slot name: " + $SlotName
+Remove-AzureRmWebAppSlot -ResourceGroupName $ResourceGroupName -Name $WebAppServiceName -Slot $SlotName -Force
