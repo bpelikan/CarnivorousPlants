@@ -42,7 +42,7 @@
 
 
   <ItemGroup>
-    <None Update="Scripts\BuildStepPowerShell.ps1">
+    <None Update="Scripts\ScaleAppServicePlan.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Scripts\CreateDevelopSlot.ps1">
