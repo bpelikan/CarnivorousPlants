@@ -20,5 +20,4 @@ $slots.GetEnumerator() | Remove-AzureRmWebAppSlot -Force
 #"Resource group name: " + $ResourceGroupName
 #"Webb App Service Plan name: " + $WebAppServiceName
 #"Slot name: " + $SlotName
-
 # Remove-AzureRmWebAppSlot -ResourceGroupName $ResourceGroupName -Name $WebAppServiceName -Slot $SlotName -Force
