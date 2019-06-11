@@ -1,5 +1,14 @@
 ﻿[CmdletBinding()]
 param (
+	[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
+    [String]
+    $ServicePrincipalApplicationID,
+	[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
+    [String]
+    $ServicePrincipalPass,
+	[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
+    [String]
+    $ServicePrincipalTenantID,
     [Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
     [String]
     $ResourceGroupName,
@@ -26,5 +35,7 @@ param (
 
 "SQLServerName: " + $SQLServerName
 "SQLDBName: " + $SQLDBName
+
+az login --service-principal --username $ServicePrincipalApplicationID --password $ServicePrincipalPass --tenant $ServicePrincipalTenantID
 
 az sql db update -g $ResourceGroupName -s $SQLServerName -n $SQLDBName --tier $DBTier --capacity $DBCapacity --max-size $DBMaxSize > $null
