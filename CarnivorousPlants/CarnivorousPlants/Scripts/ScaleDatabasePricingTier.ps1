@@ -24,4 +24,4 @@ param (
     $MaxSize
 )
 
-az sql db update -g $ResourceGroupName -s $ServerName -n $SQLDbName --tier $Tier --capacity $Capacity --max-size $MaxSize
+az sql db update -g $ResourceGroupName -s $ServerName -n $SQLDbName --tier $Tier --capacity $Capacity --max-size $MaxSize > $null

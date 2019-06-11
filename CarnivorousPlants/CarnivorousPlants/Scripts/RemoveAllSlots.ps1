@@ -9,7 +9,7 @@ param (
 )
 
 $slots = Get-AzureRmWebAppSlot -ResourceGroupName $ResourceGroupName -Name $WebAppServiceName
-@($slots).GetEnumerator() | Remove-AzureRmWebAppSlot -Force
+@($slots).GetEnumerator() | Remove-AzureRmWebAppSlot -Force > $null
 
 #########
 #[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
