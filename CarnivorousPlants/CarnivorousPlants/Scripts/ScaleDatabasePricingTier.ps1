@@ -24,6 +24,6 @@ param (
     $DBMaxSize
 )
 
-"SQLServerName" + $SQLServerName
-"SQLDBName" + $SQLDBName
-az sql db update -g $ResourceGroupName --server $ServerName -n $SQLDBName --tier $DBTier --capacity $DBCapacity --max-size $DBMaxSize > $null
+"SQLServerName: " + $SQLServerName
+"SQLDBName: " + $SQLDBName
+az sql db update -g $ResourceGroupName -s +"'"+$ServerName+"'"+ -n $SQLDBName --tier $DBTier --capacity $DBCapacity --max-size $DBMaxSize > $null
