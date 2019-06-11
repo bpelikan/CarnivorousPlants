@@ -11,7 +11,7 @@ param (
     $Tier
 )
 
-Set-AzureRmAppServicePlan -ResourceGroupName $ResourceGroupName -Name $ServicePlanName -Tier $Tier
+Set-AzureRmAppServicePlan -ResourceGroupName $ResourceGroupName -Name $ServicePlanName -Tier $Tier > $null
 
 #########
 #"App Service Plan scale up:"

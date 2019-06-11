@@ -14,7 +14,7 @@ param (
     $SlotName
 )
 
-New-AzureRmWebAppSlot -ResourceGroupName $ResourceGroupName -Name $WebAppServiceName -AppServicePlan $ServicePlanName -Slot $SlotName
+New-AzureRmWebAppSlot -ResourceGroupName $ResourceGroupName -Name $WebAppServiceName -AppServicePlan $ServicePlanName -Slot $SlotName > $null
 
 #########
 #"Create Slot:"
