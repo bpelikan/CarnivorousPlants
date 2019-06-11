@@ -26,5 +26,5 @@ param (
 
 "SQLServerName: " + $SQLServerName
 "SQLDBName: " + $SQLDBName
-"test" $SQLDBName
+
 az sql db update -g $ResourceGroupName -s $SQLServerName -n $SQLDBName --tier $DBTier --capacity $DBCapacity --max-size $DBMaxSize > $null
