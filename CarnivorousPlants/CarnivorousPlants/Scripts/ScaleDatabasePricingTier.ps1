@@ -8,20 +8,20 @@ param (
     $SQLServerName,
 	[Parameter(Mandatory=$true)][ValidateNotNullOrEmpty()]
     [String]
-    $SQLDbName,
+    $SQLDBName,
     [Parameter(Mandatory=$true)][ValidateSet("Basic","Standard","Premium")] 
     [String] 
-    $Tier,
+    $DBTier,
 	[Parameter(Mandatory=$true)][ValidateSet("5","10","20","50","100","200","400","800")] 
     [String] 
-    $Capacity,
+    $DBCapacity,
 	[Parameter(Mandatory=$true)][ValidateSet("100MB","500MB",
 											 "1GB","2GB","5GB",
 											 "10GB","20GB","30GB","40GB","50GB",
 											 "100GB","150GB","200GB","250GB","300GB","400GB","500GB","750GB"
 											 ,"1TB")] 
     [String] 
-    $MaxSize
+    $DBMaxSize
 )
 
-az sql db update -g $ResourceGroupName -s $ServerName -n $SQLDbName --tier $Tier --capacity $Capacity --max-size $MaxSize > $null
+az sql db update -g $ResourceGroupName -s $ServerName -n $SQLDBName --tier $DBTier --capacity $DBCapacity --max-size $DBMaxSize > $null
