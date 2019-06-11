@@ -33,9 +33,9 @@ param (
     $DBMaxSize
 )
 
-"SQLServerName: " + $SQLServerName
-"SQLDBName: " + $SQLDBName
-
 az login --service-principal --username $ServicePrincipalApplicationID --password $ServicePrincipalPass --tenant $ServicePrincipalTenantID
-
 az sql db update -g $ResourceGroupName -s $SQLServerName -n $SQLDBName --tier $DBTier --capacity $DBCapacity --max-size $DBMaxSize > $null
+
+#########
+#"SQLServerName: " + $SQLServerName
+#"SQLDBName: " + $SQLDBName
