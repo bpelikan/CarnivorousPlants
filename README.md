@@ -3,6 +3,7 @@
 
 | branch|status|
 |---------------------------------|---|
+| -|[![Build Status](https://dev.azure.com/bpelikan/CarnivorousPlants/_apis/build/status/CP-Check_All_Branches-CI?branchName=master)](https://dev.azure.com/bpelikan/CarnivorousPlants/_build/latest?definitionId=23&branchName=master)|
 | master  |[![Build Status](https://dev.azure.com/bpelikan/CarnivorousPlants/_apis/build/status/CP-master-CI?branchName=master)](https://dev.azure.com/bpelikan/CarnivorousPlants/_build/latest?definitionId=15&branchName=master)|
 | develop |[![Build Status](https://dev.azure.com/bpelikan/CarnivorousPlants/_apis/build/status/CP-develop-CI?branchName=develop)](https://dev.azure.com/bpelikan/CarnivorousPlants/_build/latest?definitionId=18&branchName=develop)|
 
